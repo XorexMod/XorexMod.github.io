@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeadSeek</title>
+    <title>DeadSeek — асимметричный хоррор</title>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* ===== Стили (без изменений) ===== */
@@ -217,29 +217,7 @@
             font-size: 0.9rem;
             opacity: 0.9;
         }
-        .ability-desc .editable {
-            cursor: pointer;
-            border-bottom: 1px dashed var(--accent);
-            padding: 2px 4px;
-            transition: 0.2s;
-        }
-        .ability-desc .editable:hover {
-            background: var(--accent);
-            color: #fff;
-        }
-        .ability-desc textarea {
-            width: 100%;
-            background: var(--bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 8px;
-            font-family: var(--font);
-            font-size: 0.9rem;
-            margin-top: 5px;
-            resize: vertical;
-            min-height: 60px;
-        }
+        /* Убираем всё, что связано с редактированием */
         @media (max-width: 700px) {
             header { flex-direction: column; align-items: stretch; gap: 10px; }
             .controls { justify-content: center; }
@@ -322,7 +300,7 @@
         };
 
         // ================================================================
-        // 2. ДАННЫЕ ПЕРСОНАЖЕЙ (с русскими именами)
+        // 2. ДАННЫЕ ПЕРСОНАЖЕЙ (русские имена)
         // ================================================================
         const DEFAULT_DATA = {
             killers: [
@@ -431,29 +409,16 @@
         };
 
         // ================================================================
-        // 3. ЗАГРУЗКА / СОХРАНЕНИЕ
-        // ================================================================
-        function loadData() {
-            const stored = localStorage.getItem('deadseek_data');
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    if (parsed.killers && parsed.survivors) return parsed;
-                } catch (e) {}
-            }
-            localStorage.setItem('deadseek_data', JSON.stringify(DEFAULT_DATA));
-            return JSON.parse(JSON.stringify(DEFAULT_DATA));
-        }
-        function saveData(data) {
-            localStorage.setItem('deadseek_data', JSON.stringify(data));
-        }
-
-        // ================================================================
-        // 4. РЕНДЕРИНГ ДОСЬЕ
+        // 3. ЗАГРУЗКА ДАННЫХ (всегда сбрасываем на дефолтные)
         // ================================================================
         let currentLang = 'ru';
-        let currentData = loadData();
+        // Принудительно перезаписываем localStorage дефолтными данными
+        localStorage.setItem('deadseek_data', JSON.stringify(DEFAULT_DATA));
+        let currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
 
+        // ================================================================
+        // 4. РЕНДЕРИНГ ДОСЬЕ (без редактирования)
+        // ================================================================
         function renderDossier() {
             const container = document.getElementById('dossierContainer');
             container.innerHTML = '';
@@ -474,8 +439,6 @@
                 survivorSection.appendChild(createCharacterCard(survivor, 'survivor', index));
             });
             container.appendChild(survivorSection);
-
-            saveData(currentData);
         }
 
         function createCharacterCard(character, type, index) {
@@ -515,13 +478,29 @@
                     <div class="stat-item"><strong>${currentLang === 'ru' ? 'Кулдаун' : 'Cooldown'}</strong> ${cooldown}</div>
                 </div>
                 <div class="abilities-list">
-                    ${character.abilities.map((ability, abIndex) => createAbilityHTML(ability, type, index, abIndex)).join('')}
+                    ${character.abilities.map((ability) => {
+                        const nameAb = ability.name[currentLang] || ability.name.ru;
+                        const typeAb = ability.type[currentLang] || ability.type.ru;
+                        const descAb = ability.desc[currentLang] || ability.desc.ru;
+                        return `
+                            <div class="ability">
+                                <div class="ability-header">
+                                    <span class="name">${nameAb}</span>
+                                    <span>${typeAb}</span>
+                                    <span>${ability.value}</span>
+                                    <span>${ability.duration}</span>
+                                    <span>${ability.cooldown}</span>
+                                    <span>${ability.radius}</span>
+                                </div>
+                                <div class="ability-desc">${descAb}</div>
+                            </div>
+                        `;
+                    }).join('')}
                 </div>
             `;
             card.appendChild(details);
 
             header.addEventListener('click', function(e) {
-                if (e.target.tagName === 'TEXTAREA') return;
                 const isOpen = details.classList.toggle('open');
                 header.querySelector('.toggle-icon').textContent = isOpen ? '▲' : '▼';
             });
@@ -529,100 +508,8 @@
             return card;
         }
 
-        function createAbilityHTML(ability, type, charIndex, abIndex) {
-            const name = ability.name[currentLang] || ability.name.ru;
-            const typeText = ability.type[currentLang] || ability.type.ru;
-            const desc = ability.desc[currentLang] || ability.desc.ru;
-            const value = ability.value;
-            const duration = ability.duration;
-            const cooldown = ability.cooldown;
-            const radius = ability.radius;
-            const dataKey = `${type}_${charIndex}_${abIndex}`;
-
-            return `
-                <div class="ability">
-                    <div class="ability-header">
-                        <span class="name">${name}</span>
-                        <span>${typeText}</span>
-                        <span>${value}</span>
-                        <span>${duration}</span>
-                        <span>${cooldown}</span>
-                        <span>${radius}</span>
-                    </div>
-                    <div class="ability-desc">
-                        <span class="editable" data-key="${dataKey}">${desc}</span>
-                        <textarea style="display:none;" data-key="${dataKey}">${desc}</textarea>
-                    </div>
-                </div>
-            `;
-        }
-
         // ================================================================
-        // 5. РЕДАКТИРОВАНИЕ
-        // ================================================================
-        function initEditableDescriptions() {
-            const container = document.getElementById('dossierContainer');
-            container.addEventListener('click', function(e) {
-                const target = e.target;
-                if (target.classList.contains('editable')) {
-                    const textarea = target.nextElementSibling;
-                    if (textarea && textarea.tagName === 'TEXTAREA') {
-                        target.style.display = 'none';
-                        textarea.style.display = 'block';
-                        textarea.focus();
-                        textarea.select();
-                    }
-                }
-            });
-
-            container.addEventListener('blur', function(e) {
-                const target = e.target;
-                if (target.tagName === 'TEXTAREA' && target.dataset.key) {
-                    saveEditedDescription(target);
-                }
-            }, true);
-
-            container.addEventListener('keydown', function(e) {
-                const target = e.target;
-                if (target.tagName === 'TEXTAREA' && target.dataset.key) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        target.blur();
-                    }
-                    if (e.key === 'Escape') {
-                        const span = target.previousElementSibling;
-                        if (span && span.classList.contains('editable')) {
-                            target.style.display = 'none';
-                            span.style.display = 'inline';
-                        }
-                    }
-                }
-            });
-        }
-
-        function saveEditedDescription(textarea) {
-            const key = textarea.dataset.key;
-            const newValue = textarea.value;
-            const span = textarea.previousElementSibling;
-            if (span && span.classList.contains('editable')) {
-                span.textContent = newValue;
-                span.style.display = 'inline';
-                textarea.style.display = 'none';
-            }
-
-            const parts = key.split('_');
-            const type = parts[0];
-            const charIndex = parseInt(parts[1], 10);
-            const abIndex = parseInt(parts[2], 10);
-            const targetArray = type === 'killer' ? currentData.killers : currentData.survivors;
-            if (targetArray[charIndex] && targetArray[charIndex].abilities[abIndex]) {
-                targetArray[charIndex].abilities[abIndex].desc[currentLang] = newValue;
-                saveData(currentData);
-            }
-        }
-
-        // ================================================================
-        // 6. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ПРИ СМЕНЕ ЯЗЫКА
+        // 5. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ПРИ СМЕНЕ ЯЗЫКА
         // ================================================================
         function updateUI(lang) {
             const ui = UI_TEXTS[lang];
@@ -640,12 +527,11 @@
             currentLang = lang;
             localStorage.setItem('deadseek_lang', lang);
             updateUI(lang);
-            renderDossier(); // перерисовывает карточки с новыми именами и описаниями
-            // Заново инициализируем редактирование (делегирование уже работает)
+            renderDossier(); // перерисовываем карточки
         }
 
         // ================================================================
-        // 7. ТЕМА
+        // 6. ТЕМА
         // ================================================================
         function toggleTheme() {
             document.body.classList.toggle('light');
@@ -655,7 +541,7 @@
         }
 
         // ================================================================
-        // 8. НАВИГАЦИЯ
+        // 7. НАВИГАЦИЯ
         // ================================================================
         function initNavigation() {
             const navLinks = document.querySelectorAll('nav a');
@@ -677,10 +563,10 @@
         }
 
         // ================================================================
-        // 9. ИНИЦИАЛИЗАЦИЯ
+        // 8. ИНИЦИАЛИЗАЦИЯ
         // ================================================================
         document.addEventListener('DOMContentLoaded', function() {
-            // Загружаем язык
+            // Язык
             const savedLang = localStorage.getItem('deadseek_lang') || 'ru';
             currentLang = savedLang;
 
@@ -700,9 +586,7 @@
             });
 
             initNavigation();
-            renderDossier();
-            initEditableDescriptions();
-            setLanguage(currentLang); // обновляет все UI-тексты
+            setLanguage(currentLang); // обновляет UI и рендерит досье с русскими именами
         });
     </script>
 </body>
