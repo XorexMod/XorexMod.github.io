@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Специфичные стили для досье */
+        /* ----- СПЕЦИФИЧНЫЕ СТИЛИ ДЛЯ ДОСЬЕ (без изменений) ----- */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -84,7 +84,6 @@
             font-size: 11px;
         }
         body.light .card .abilities-preview .tag { background: #d0c0b0; border-color: #b8a89c; color: #3a2a1a; }
-
         .table-wrap {
             overflow-x: auto;
             margin: 25px 0 10px;
@@ -125,7 +124,6 @@
         .role-survivor td:first-child { color: #88bbdd; }
         body.light .role-killer td:first-child { color: #aa4422; }
         body.light .role-survivor td:first-child { color: #336699; }
-
         .modal {
             display: none;
             position: fixed;
@@ -214,7 +212,6 @@
             color: #887766;
             font-style: italic;
         }
-
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -307,7 +304,6 @@
             border-bottom-color: #882222;
             color: #4a2a1a;
         }
-
         @media (max-width: 600px) {
             .card-grid { grid-template-columns: 1fr; }
             .controls { flex-direction: column; align-items: stretch; }
@@ -318,21 +314,24 @@
 <body class="dark">
 
     <div class="content">
+        <!-- ШАПКА (общая) -->
         <header class="header">
             <div class="logo">DEADSEEK</div>
             <nav class="nav">
-                <a href="index.html">Главная</a>
-                <a href="dossier.html" class="active">Досье</a>
-                <a href="#news" onclick="alert('Скоро здесь будут новости!')">Новости</a>
-                <a href="https://boosty.to/deadseek" target="_blank">Поддержать</a>
+                <a href="index.html" data-lang="home">Главная</a>
+                <a href="dossier.html" class="active" data-lang="dossier">Досье</a>
+                <a href="#news" onclick="alert('Скоро здесь будут новости!')" data-lang="news">Новости</a>
+                <a href="https://boosty.to/deadseek" target="_blank" data-lang="support">Поддержать</a>
                 <button class="theme-toggle" id="themeToggle">☀️</button>
             </nav>
         </header>
 
+        <!-- ЗАГОЛОВОК -->
         <h2 style="font-family: 'Cinzel', serif; color: #dd8844; text-align: center; margin: 10px 0 20px;">
             📖 Досье персонажей
         </h2>
 
+        <!-- УПРАВЛЕНИЕ -->
         <div class="controls">
             <div class="role-tabs">
                 <button class="active" data-role="all">Все</button>
@@ -345,8 +344,10 @@
             </div>
         </div>
 
+        <!-- СЕТКА КАРТОЧЕК -->
         <div id="cardGrid" class="card-grid"></div>
 
+        <!-- ТАБЛИЦА -->
         <div class="table-wrap">
             <table id="summaryTable">
                 <thead>
@@ -363,9 +364,11 @@
             </table>
         </div>
 
+        <!-- ПОДВАЛ -->
         <div class="footer">DeadSeek — концепт · Данные обновлены 14.07.2026</div>
     </div>
 
+    <!-- МОДАЛЬНОЕ ОКНО -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close" id="modalClose">&times;</span>
@@ -376,155 +379,182 @@
 
     <script src="script.js"></script>
     <script>
-        // ===== ДАННЫЕ С ОПИСАНИЯМИ =====
+        // ============================================================
+        //  ДАННЫЕ ПЕРСОНАЖЕЙ (ДВУЯЗЫЧНЫЕ)
+        // ============================================================
         const characters = [
+            // ---------- Bloody Noob ----------
             {
-                name: "Bloody Noob",
-                role: "Киллер",
+                name: { ru: "Bloody Noob", en: "Bloody Noob" },
+                role: { ru: "Киллер", en: "Killer" },
                 hp: 1150,
                 speed: 25.0,
-                baseDmg: 20,
+                baseDmg: { ru: 20, en: 20 },
                 baseCd: "3s",
                 abilities: [
-                    { name: "Combo", type: "Урон", value: 50, duration: "-", cooldown: "25s", radius: "[Uknown]", description: "Наносит 50 урона." },
-                    { name: "Human Heart", type: "Лечение", value: 40, duration: "-", cooldown: "50s", radius: "-", description: "Восстанавливает 40 HP." },
-                    { name: "Bloody Cola", type: "Мобильность", value: "2x", duration: "10s", cooldown: "40s", radius: "-", description: "Увеличивает скорость в 2 раза на 10 секунд." }
+                    { name: { ru: "Combo", en: "Combo" }, type: { ru: "Урон", en: "Damage" }, value: 50, duration: "-", cooldown: "25s", radius: "[Uknown]", description: { ru: "Наносит 50 урона.", en: "Deals 50 damage." } },
+                    { name: { ru: "Human Heart", en: "Human Heart" }, type: { ru: "Лечение", en: "Heal" }, value: 40, duration: "-", cooldown: "50s", radius: "-", description: { ru: "Восстанавливает 40 HP.", en: "Restores 40 HP." } },
+                    { name: { ru: "Bloody Cola", en: "Bloody Cola" }, type: { ru: "Мобильность", en: "Mobility" }, value: "2x", duration: "10s", cooldown: "40s", radius: "-", description: { ru: "Увеличивает скорость в 2 раза на 10 секунд.", en: "Doubles speed for 10 seconds." } }
                 ]
             },
+            // ---------- Noob ----------
             {
-                name: "Noob",
-                role: "Выживший",
+                name: { ru: "Noob", en: "Noob" },
+                role: { ru: "Выживший", en: "Survivor" },
                 hp: 90,
                 speed: 22.0,
-                baseDmg: 5,
+                baseDmg: { ru: 5, en: 5 },
                 baseCd: "10s",
                 abilities: [
-                    { name: "Life Burger", type: "Лечение", value: 90, duration: "-", cooldown: "120s", radius: "-", description: "Восстанавливает 100% HP." },
-                    { name: "Bloxy Cola", type: "Мобильность", value: "3x", duration: "5s", cooldown: "60s", radius: "-", description: "Увеличивает скорость в 3 раза на 5 секунд." }
+                    { name: { ru: "Life Burger", en: "Life Burger" }, type: { ru: "Лечение", en: "Heal" }, value: 90, duration: "-", cooldown: "120s", radius: "-", description: { ru: "Восстанавливает 100% HP.", en: "Restores 100% HP." } },
+                    { name: { ru: "Bloxy Cola", en: "Bloxy Cola" }, type: { ru: "Мобильность", en: "Mobility" }, value: "3x", duration: "5s", cooldown: "60s", radius: "-", description: { ru: "Увеличивает скорость в 3 раза на 5 секунд.", en: "Triples speed for 5 seconds." } }
                 ]
             },
+            // ---------- Killer Kay ----------
             {
-                name: "Killer Kay",
-                role: "Киллер",
+                name: { ru: "Killer Kay", en: "Killer Kay" },
+                role: { ru: "Киллер", en: "Killer" },
                 hp: 1200,
                 speed: 25.0,
-                baseDmg: 20,
+                baseDmg: { ru: 20, en: 20 },
                 baseCd: "2s",
                 abilities: [
-                    { name: "Break", type: "Урон", value: 60, duration: "-", cooldown: "30s", radius: "[Uknown]", description: "Наносит 60 урона. Перелом позвоночника." },
-                    { name: "Three Washeps", type: "Урон", value: 20, duration: "-", cooldown: "40s", radius: "-", description: "Выстреливает 3 шайбами, каждая наносит 20 урона, летят в случайных игроков." },
-                    { name: "Ice Rink", type: "Дебафф", value: "-", duration: "10s", cooldown: "60s", radius: "full map", description: "Создаёт каток на всей карте, игроки падают на 10 секунд." }
+                    { name: { ru: "Break", en: "Break" }, type: { ru: "Урон", en: "Damage" }, value: 60, duration: "-", cooldown: "30s", radius: "[Uknown]", description: { ru: "Наносит 60 урона. Перелом позвоночника.", en: "Deals 60 damage. Spinal fracture." } },
+                    { name: { ru: "Three Washeps", en: "Three Washeps" }, type: { ru: "Урон", en: "Damage" }, value: 20, duration: "-", cooldown: "40s", radius: "-", description: { ru: "Выстреливает 3 шайбами, каждая наносит 20 урона, летят в случайных игроков.", en: "Fires 3 pucks, each deals 20 damage to random players." } },
+                    { name: { ru: "Ice Rink", en: "Ice Rink" }, type: { ru: "Дебафф", en: "Debuff" }, value: "-", duration: "10s", cooldown: "60s", radius: "full map", description: { ru: "Создаёт каток на всей карте, игроки падают на 10 секунд.", en: "Creates an ice rink across the map, players slip for 10 seconds." } }
                 ]
             },
+            // ---------- Kay ----------
             {
-                name: "Kay",
-                role: "Выживший",
+                name: { ru: "Kay", en: "Kay" },
+                role: { ru: "Выживший", en: "Survivor" },
                 hp: 110,
                 speed: 22.0,
-                baseDmg: "10 + stun 5s",
+                baseDmg: { ru: "10 + stun 5s", en: "10 + stun 5s" },
                 baseCd: "20s",
                 abilities: [
-                    { name: "Default", type: "Stun", value: "-10hp", duration: "5s", cooldown: "30s", radius: "[Uknown]", description: "Оглушает на 5 секунд и наносит 10 урона." },
-                    { name: "Roller Skates", type: "Мобильность", value: "2x", duration: "10s", cooldown: "50s", radius: "-", description: "Ускорение в 2 раза на 10 секунд." },
-                    { name: "Whistling", type: "Stun", value: "-", duration: "5s", cooldown: "30s", radius: "[Uknown]", description: "Сбивает убийцу с ног на 5 секунд." }
+                    { name: { ru: "Default", en: "Default" }, type: { ru: "Stun", en: "Stun" }, value: "-10hp", duration: "5s", cooldown: "30s", radius: "[Uknown]", description: { ru: "Оглушает на 5 секунд и наносит 10 урона.", en: "Stuns for 5 seconds and deals 10 damage." } },
+                    { name: { ru: "Roller Skates", en: "Roller Skates" }, type: { ru: "Мобильность", en: "Mobility" }, value: "2x", duration: "10s", cooldown: "50s", radius: "-", description: { ru: "Ускорение в 2 раза на 10 секунд.", en: "Doubles speed for 10 seconds." } },
+                    { name: { ru: "Whistling", en: "Whistling" }, type: { ru: "Stun", en: "Stun" }, value: "-", duration: "5s", cooldown: "30s", radius: "[Uknown]", description: { ru: "Сбивает убийцу с ног на 5 секунд.", en: "Knocks the killer down for 5 seconds." } }
                 ]
             },
+            // ---------- Crazy Suspect ----------
             {
-                name: "Crazy Suspect",
-                role: "Киллер",
+                name: { ru: "Crazy Suspect", en: "Crazy Suspect" },
+                role: { ru: "Киллер", en: "Killer" },
                 hp: 900,
                 speed: 23.0,
-                baseDmg: 10,
+                baseDmg: { ru: 10, en: 10 },
                 baseCd: "1s",
                 abilities: [
-                    { name: "Leg Kick", type: "Урон", value: 40, duration: "-", cooldown: "30s", radius: "[Uknown]", description: "Наносит 40 урона." },
-                    { name: "X-Ray", type: "Буквально X-Ray", value: "-", duration: "10s", cooldown: "40s", radius: "-", description: "Позволяет видеть выживших сквозь стены на 10 секунд." },
-                    { name: "Trap", type: "Stun", value: "-10hp", duration: "5s", cooldown: "30s", radius: "-", description: "Останавливает выжившего на 5 секунд и наносит 10 урона." }
+                    { name: { ru: "Leg Kick", en: "Leg Kick" }, type: { ru: "Урон", en: "Damage" }, value: 40, duration: "-", cooldown: "30s", radius: "[Uknown]", description: { ru: "Наносит 40 урона.", en: "Deals 40 damage." } },
+                    { name: { ru: "X-Ray", en: "X-Ray" }, type: { ru: "Буквально X-Ray", en: "X-Ray" }, value: "-", duration: "10s", cooldown: "40s", radius: "-", description: { ru: "Позволяет видеть выживших сквозь стены на 10 секунд.", en: "See survivors through walls for 10 seconds." } },
+                    { name: { ru: "Trap", en: "Trap" }, type: { ru: "Stun", en: "Stun" }, value: "-10hp", duration: "5s", cooldown: "30s", radius: "-", description: { ru: "Останавливает выжившего на 5 секунд и наносит 10 урона.", en: "Stops survivor for 5 seconds and deals 10 damage." } }
                 ]
             },
+            // ---------- Yuki ----------
             {
-                name: "Yuki",
-                role: "Выживший",
+                name: { ru: "Yuki", en: "Yuki" },
+                role: { ru: "Выживший", en: "Survivor" },
                 hp: 90,
                 speed: 22.0,
-                baseDmg: "-",
+                baseDmg: { ru: "-", en: "-" },
                 baseCd: "-",
                 abilities: [
-                    { name: "Firt-aid Kit", type: "Лечение", value: 1, duration: "50s", cooldown: "40s", radius: "[Uknown]", description: "Выбрасывает медкомплект, лечит 1 HP/сек в радиусе на 50 секунд." },
-                    { name: "Coffin Carrigge", type: "клоны-уборщики*", value: "2шт", duration: "-", cooldown: "90s", radius: "full map", description: "Вызывает сотрудников, которые убирают трупы с дороги." }
+                    { name: { ru: "First-aid Kit", en: "First-aid Kit" }, type: { ru: "Лечение", en: "Heal" }, value: 1, duration: "50s", cooldown: "40s", radius: "[Uknown]", description: { ru: "Выбрасывает медкомплект, лечит 1 HP/сек в радиусе на 50 секунд.", en: "Drops a medkit, heals 1 HP/sec in area for 50 seconds." } },
+                    { name: { ru: "Coffin Carriage", en: "Coffin Carriage" }, type: { ru: "клоны-уборщики*", en: "cleaner clones*" }, value: "2шт", duration: "-", cooldown: "90s", radius: "full map", description: { ru: "Вызывает сотрудников, которые убирают трупы с дороги.", en: "Summons helpers that remove corpses from the path." } }
                 ]
             },
+            // ---------- Hacker ----------
             {
-                name: "Hacker",
-                role: "Киллер",
+                name: { ru: "Hacker", en: "Hacker" },
+                role: { ru: "Киллер", en: "Killer" },
                 hp: 1300,
                 speed: 24.0,
-                baseDmg: 40,
+                baseDmg: { ru: 40, en: 40 },
                 baseCd: "5s",
                 abilities: [
-                    { name: "Click", type: "Урон", value: 25, duration: "-", cooldown: "15s", radius: "[Uknown]", description: "Наносит 25 урона." },
-                    { name: "Combo", type: "Урон", value: 50, duration: "-", cooldown: "20s", radius: "[Uknown]", description: "Наносит 50 урона." },
-                    { name: "Glitch", type: "Дебафф glitch", value: "-", duration: "10s", cooldown: "30s", radius: "-", description: "Ослепляет и создаёт помехи выжившим в радиусе на 10 секунд." },
-                    { name: "Crazy Song", type: "Дебафф", value: "-", duration: "5s", cooldown: "40s", radius: "-", description: "Излучает звуки, вызывающие потерю управления на 5 секунд." }
+                    { name: { ru: "Click", en: "Click" }, type: { ru: "Урон", en: "Damage" }, value: 25, duration: "-", cooldown: "15s", radius: "[Uknown]", description: { ru: "Наносит 25 урона.", en: "Deals 25 damage." } },
+                    { name: { ru: "Combo", en: "Combo" }, type: { ru: "Урон", en: "Damage" }, value: 50, duration: "-", cooldown: "20s", radius: "[Uknown]", description: { ru: "Наносит 50 урона.", en: "Deals 50 damage." } },
+                    { name: { ru: "Glitch", en: "Glitch" }, type: { ru: "Дебафф glitch", en: "Glitch debuff" }, value: "-", duration: "10s", cooldown: "30s", radius: "-", description: { ru: "Ослепляет и создаёт помехи выжившим в радиусе на 10 секунд.", en: "Blinds and disorients survivors in an area for 10 seconds." } },
+                    { name: { ru: "Crazy Song", en: "Crazy Song" }, type: { ru: "Дебафф", en: "Debuff" }, value: "-", duration: "5s", cooldown: "40s", radius: "-", description: { ru: "Излучает звуки, вызывающие потерю управления на 5 секунд.", en: "Emits sounds that cause loss of control for 5 seconds." } }
                 ]
             },
+            // ---------- Cheater ----------
             {
-                name: "Cheater",
-                role: "Выживший",
+                name: { ru: "Cheater", en: "Cheater" },
+                role: { ru: "Выживший", en: "Survivor" },
                 hp: 110,
                 speed: 22.0,
-                baseDmg: 20,
+                baseDmg: { ru: 20, en: 20 },
                 baseCd: "15s",
                 abilities: [
-                    { name: "Crazy Kick", type: "Урон", value: 20, duration: "-", cooldown: "20s", radius: "[Uknown]", description: "Наносит 20 урона." },
-                    { name: "Jail", type: "Stun", value: "-", duration: "5s", cooldown: "35s", radius: "-", description: "Ставит клетку для убийцы на 5 секунд." },
-                    { name: "Fly", type: "Мобильность", value: "3x + fly", duration: "5s", cooldown: "60s", radius: "-", description: "Даёт полёт на 5 секунд со скоростью x3." }
+                    { name: { ru: "Crazy Kick", en: "Crazy Kick" }, type: { ru: "Урон", en: "Damage" }, value: 20, duration: "-", cooldown: "20s", radius: "[Uknown]", description: { ru: "Наносит 20 урона.", en: "Deals 20 damage." } },
+                    { name: { ru: "Jail", en: "Jail" }, type: { ru: "Stun", en: "Stun" }, value: "-", duration: "5s", cooldown: "35s", radius: "-", description: { ru: "Ставит клетку для убийцы на 5 секунд.", en: "Traps the killer in a cage for 5 seconds." } },
+                    { name: { ru: "Fly", en: "Fly" }, type: { ru: "Мобильность", en: "Mobility" }, value: "3x + fly", duration: "5s", cooldown: "60s", radius: "-", description: { ru: "Даёт полёт на 5 секунд со скоростью x3.", en: "Grants flight for 5 seconds at 3x speed." } }
                 ]
             },
+            // ---------- Нежить (Undead) ----------
             {
-                name: "Нежить",
-                role: "Киллер",
+                name: { ru: "Нежить", en: "Undead" },
+                role: { ru: "Киллер", en: "Killer" },
                 hp: 1000,
                 speed: 24.0,
-                baseDmg: 25,
+                baseDmg: { ru: 25, en: 25 },
                 baseCd: "3s",
                 abilities: [
-                    { name: "Пронзание", type: "Урон", value: 30, duration: "-", cooldown: "15s", radius: "[Uknown]", description: "Наносит 30 урона." },
-                    { name: "Call of Undead", type: "clones", value: "[random]", duration: "-", cooldown: "50s", radius: "-", description: "Призывает приспешников. Количество зависит от убитых выживших. Длится бесконечно." },
-                    { name: "Ritual", type: "+hitbox distants", value: "[Uknown]", duration: "25s", cooldown: "90s", radius: "-", description: "Добавляет дополнительные конечности, увеличивая хитбокс на 25 секунд." }
+                    { name: { ru: "Пронзание", en: "Pierce" }, type: { ru: "Урон", en: "Damage" }, value: 30, duration: "-", cooldown: "15s", radius: "[Uknown]", description: { ru: "Наносит 30 урона.", en: "Deals 30 damage." } },
+                    { name: { ru: "Call of Undead", en: "Call of Undead" }, type: { ru: "clones", en: "clones" }, value: "[random]", duration: "-", cooldown: "50s", radius: "-", description: { ru: "Призывает приспешников. Количество зависит от убитых выживших. Длится бесконечно.", en: "Summons minions. Number depends on killed survivors. Lasts forever." } },
+                    { name: { ru: "Ritual", en: "Ritual" }, type: { ru: "+hitbox distants", en: "+hitbox range" }, value: "[Uknown]", duration: "25s", cooldown: "90s", radius: "-", description: { ru: "Добавляет дополнительные конечности, увеличивая хитбокс на 25 секунд.", en: "Adds extra limbs, increasing hitbox for 25 seconds." } }
                 ]
             },
+            // ---------- Экзарцист (Exorcist) ----------
             {
-                name: "Экзарцист",
-                role: "Выживший",
+                name: { ru: "Экзарцист", en: "Exorcist" },
+                role: { ru: "Выживший", en: "Survivor" },
                 hp: 80,
                 speed: 22.0,
-                baseDmg: "- + stun 2s",
+                baseDmg: { ru: "- + stun 2s", en: "- + stun 2s" },
                 baseCd: "30s",
                 abilities: [
-                    { name: "Взмах", type: "Slownes", value: "1.5x", duration: "5s", cooldown: "40s", radius: "[Uknown]", description: "Замедляет убийцу в 1.5 раза на 5 секунд." },
-                    { name: "Anti-Attack", type: "disable attacks", value: "-", duration: "30s", cooldown: "120s", radius: "-", description: "Блокирует любую способность убийцы на 30 секунд." },
-                    { name: "Harmony", type: "Random hp", value: "-", duration: "-", cooldown: "40s", radius: "-", description: "Увеличивает или уменьшает HP случайным образом. Зависит от уровня паники, который снижается после удачного стана." }
+                    { name: { ru: "Взмах", en: "Swipe" }, type: { ru: "Slownes", en: "Slow" }, value: "1.5x", duration: "5s", cooldown: "40s", radius: "[Uknown]", description: { ru: "Замедляет убийцу в 1.5 раза на 5 секунд.", en: "Slows the killer by 1.5x for 5 seconds." } },
+                    { name: { ru: "Anti-Attack", en: "Anti-Attack" }, type: { ru: "disable attacks", en: "disable attacks" }, value: "-", duration: "30s", cooldown: "120s", radius: "-", description: { ru: "Блокирует любую способность убийцы на 30 секунд.", en: "Blocks all killer abilities for 30 seconds." } },
+                    { name: { ru: "Harmony", en: "Harmony" }, type: { ru: "Random hp", en: "Random HP" }, value: "-", duration: "-", cooldown: "40s", radius: "-", description: { ru: "Увеличивает или уменьшает HP случайным образом. Зависит от уровня паники, который снижается после удачного стана.", en: "Randomly increases or decreases HP. Depends on panic level, reduced after successful stun." } }
                 ]
             }
         ];
 
-        const abilityTypes = [...new Set(characters.flatMap(c => c.abilities.map(a => a.type)))].sort();
+        // ------------------------------------------------------------
+        //  ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ДЛЯ ДВУЯЗЫЧНЫХ ДАННЫХ
+        // ------------------------------------------------------------
+        function getLocalized(obj, lang) {
+            if (typeof obj === 'object' && obj !== null && (obj.ru || obj.en)) {
+                return obj[lang] || obj.ru;
+            }
+            return obj;
+        }
 
-        // ===== СОСТОЯНИЕ =====
+        // Получаем текущий язык
+        let lang = localStorage.getItem('lang') || 'ru';
+
+        // ------------------------------------------------------------
+        //  ЛОГИКА РЕНДЕРИНГА
+        // ------------------------------------------------------------
         let currentRole = 'all';
         let currentAbilityType = 'all';
         let searchQuery = '';
         let sortField = 'name';
         let sortAsc = true;
 
-        // ===== ФУНКЦИИ =====
         function getFiltered() {
             return characters.filter(c => {
-                if (currentRole !== 'all' && c.role !== currentRole) return false;
-                if (searchQuery && !c.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+                const name = getLocalized(c.name, lang);
+                const role = getLocalized(c.role, lang);
+                if (currentRole !== 'all' && role !== currentRole) return false;
+                if (searchQuery && !name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
                 if (currentAbilityType !== 'all') {
-                    if (!c.abilities.some(a => a.type === currentAbilityType)) return false;
+                    const hasType = c.abilities.some(a => getLocalized(a.type, lang) === currentAbilityType);
+                    if (!hasType) return false;
                 }
                 return true;
             });
@@ -537,15 +567,18 @@
             filtered.forEach(c => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                const tags = c.abilities.slice(0, 3).map(a => `<span class="tag">${a.type}</span>`).join('');
+                const name = getLocalized(c.name, lang);
+                const role = getLocalized(c.role, lang);
+                const baseDmg = getLocalized(c.baseDmg, lang);
+                const tags = c.abilities.slice(0, 3).map(a => `<span class="tag">${getLocalized(a.type, lang)}</span>`).join('');
                 const more = c.abilities.length > 3 ? `<span class="tag">+${c.abilities.length-3}</span>` : '';
                 card.innerHTML = `
-                    <div class="name">${c.name}</div>
-                    <div class="role">${c.role}</div>
+                    <div class="name">${name}</div>
+                    <div class="role">${role}</div>
                     <div class="stats">
                         <span>❤️ ${c.hp}</span>
                         <span>🏃 ${c.speed}</span>
-                        <span>⚔️ ${c.baseDmg}</span>
+                        <span>⚔️ ${baseDmg}</span>
                         <span>⏱️ ${c.baseCd}</span>
                     </div>
                     <div class="abilities-preview">${tags} ${more}</div>
@@ -559,7 +592,20 @@
         function renderTable(chars) {
             const tbody = document.getElementById('tableBody');
             const sorted = [...chars].sort((a, b) => {
-                let va = a[sortField], vb = b[sortField];
+                let va, vb;
+                if (sortField === 'name') {
+                    va = getLocalized(a.name, lang).toLowerCase();
+                    vb = getLocalized(b.name, lang).toLowerCase();
+                } else if (sortField === 'role') {
+                    va = getLocalized(a.role, lang).toLowerCase();
+                    vb = getLocalized(b.role, lang).toLowerCase();
+                } else if (sortField === 'dmg') {
+                    va = parseFloat(getLocalized(a.baseDmg, lang)) || 0;
+                    vb = parseFloat(getLocalized(b.baseDmg, lang)) || 0;
+                } else {
+                    va = a[sortField];
+                    vb = b[sortField];
+                }
                 if (typeof va === 'string') va = va.toLowerCase();
                 if (typeof vb === 'string') vb = vb.toLowerCase();
                 if (va < vb) return sortAsc ? -1 : 1;
@@ -569,43 +615,49 @@
             tbody.innerHTML = '';
             sorted.forEach(c => {
                 const tr = document.createElement('tr');
-                tr.className = c.role === 'Киллер' ? 'role-killer' : 'role-survivor';
+                const role = getLocalized(c.role, lang);
+                tr.className = role === 'Киллер' || role === 'Killer' ? 'role-killer' : 'role-survivor';
                 tr.innerHTML = `
-                    <td>${c.name}</td>
-                    <td>${c.role}</td>
+                    <td>${getLocalized(c.name, lang)}</td>
+                    <td>${role}</td>
                     <td>${c.hp}</td>
                     <td>${c.speed}</td>
-                    <td>${c.baseDmg}</td>
+                    <td>${getLocalized(c.baseDmg, lang)}</td>
                     <td>${c.baseCd}</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        // ===== МОДАЛЬНОЕ ОКНО =====
+        // ------------------------------------------------------------
+        //  МОДАЛЬНОЕ ОКНО
+        // ------------------------------------------------------------
         const modal = document.getElementById('modal');
         const modalTitle = document.getElementById('modalTitle');
         const modalAbilities = document.getElementById('modalAbilities');
         const modalClose = document.getElementById('modalClose');
 
         function openModal(char) {
-            modalTitle.textContent = `${char.name} — способности`;
+            const name = getLocalized(char.name, lang);
+            modalTitle.textContent = `${name} — ${lang === 'ru' ? 'способности' : 'abilities'}`;
             modalAbilities.innerHTML = '';
             if (char.abilities.length === 0) {
-                modalAbilities.innerHTML = '<div class="no-abilities">Нет способностей</div>';
+                modalAbilities.innerHTML = `<div class="no-abilities">${lang === 'ru' ? 'Нет способностей' : 'No abilities'}</div>`;
             } else {
                 char.abilities.forEach(ab => {
                     const div = document.createElement('div');
                     div.className = 'ability';
-                    const desc = ab.description || 'Описание отсутствует.';
+                    const abName = getLocalized(ab.name, lang);
+                    const abType = getLocalized(ab.type, lang);
+                    const desc = getLocalized(ab.description, lang) || (lang === 'ru' ? 'Описание отсутствует.' : 'Description missing.');
                     div.innerHTML = `
-                        <div class="ab-name">${ab.name}</div>
+                        <div class="ab-name">${abName}</div>
                         <div class="ab-details">
-                            <span>Тип: ${ab.type}</span>
-                            <span>Величина: ${ab.value}</span>
-                            <span>Длит: ${ab.duration}</span>
-                            <span>Кулдаун: ${ab.cooldown}</span>
-                            <span>Радиус: ${ab.radius}</span>
+                            <span>${lang === 'ru' ? 'Тип' : 'Type'}: ${abType}</span>
+                            <span>${lang === 'ru' ? 'Величина' : 'Value'}: ${ab.value}</span>
+                            <span>${lang === 'ru' ? 'Длит' : 'Dur'}: ${ab.duration}</span>
+                            <span>${lang === 'ru' ? 'Кулдаун' : 'CD'}: ${ab.cooldown}</span>
+                            <span>${lang === 'ru' ? 'Радиус' : 'Radius'}: ${ab.radius}</span>
                         </div>
                         <div class="ab-desc">${desc}</div>
                     `;
@@ -620,7 +672,9 @@
         window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-        // ===== ОБРАБОТЧИКИ ИНТЕРФЕЙСА =====
+        // ------------------------------------------------------------
+        //  ОБРАБОТЧИКИ ИНТЕРФЕЙСА
+        // ------------------------------------------------------------
         document.querySelectorAll('.role-tabs button').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.role-tabs button').forEach(b => b.classList.remove('active'));
@@ -635,7 +689,11 @@
             renderCards();
         });
 
+        // Фильтр по типу способности
+        const abilityTypes = [...new Set(characters.flatMap(c => c.abilities.map(a => getLocalized(a.type, lang))))];
         const filterContainer = document.getElementById('abilityFilter');
+        // Очищаем старые кнопки, кроме первой ("Все типы")
+        while (filterContainer.children.length > 1) filterContainer.removeChild(filterContainer.lastChild);
         abilityTypes.forEach(type => {
             const btn = document.createElement('button');
             btn.dataset.type = type;
@@ -658,9 +716,42 @@
             });
         });
 
-        // ===== СТАРТ =====
+        // ------------------------------------------------------------
+        //  ПЕРЕРИСОВКА ПРИ СМЕНЕ ЯЗЫКА
+        // ------------------------------------------------------------
+        // Сохраним оригинальную функцию applyLang из script.js
+        // Мы переопределим её частично, чтобы перерисовывать досье
+        const originalApplyLang = window.applyLang;
+        window.applyLang = function(lang) {
+            if (originalApplyLang) originalApplyLang(lang);
+            // Обновляем глобальную переменную и перерисовываем
+            window.lang = lang;
+            // Обновляем фильтры типов способностей (они зависят от языка)
+            const newTypes = [...new Set(characters.flatMap(c => c.abilities.map(a => getLocalized(a.type, lang))))];
+            const filterContainer = document.getElementById('abilityFilter');
+            while (filterContainer.children.length > 1) filterContainer.removeChild(filterContainer.lastChild);
+            newTypes.forEach(type => {
+                const btn = document.createElement('button');
+                btn.dataset.type = type;
+                btn.textContent = type;
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('#abilityFilter button').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentAbilityType = this.dataset.type;
+                    renderCards();
+                });
+                filterContainer.appendChild(btn);
+            });
+            // Перерисовываем
+            renderCards();
+        };
+
+        // ------------------------------------------------------------
+        //  СТАРТ
+        // ------------------------------------------------------------
+        // Устанавливаем глобальный язык
+        window.lang = localStorage.getItem('lang') || 'ru';
         renderCards();
     </script>
-
 </body>
 </html>
