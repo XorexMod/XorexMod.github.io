@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Специфичные стили для досье, переопределяющие общие */
+        /* Специфичные стили для досье */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -85,7 +85,6 @@
         }
         body.light .card .abilities-preview .tag { background: #d0c0b0; border-color: #b8a89c; color: #3a2a1a; }
 
-        /* Таблица */
         .table-wrap {
             overflow-x: auto;
             margin: 25px 0 10px;
@@ -127,7 +126,6 @@
         body.light .role-killer td:first-child { color: #aa4422; }
         body.light .role-survivor td:first-child { color: #336699; }
 
-        /* Модалка */
         .modal {
             display: none;
             position: fixed;
@@ -200,42 +198,23 @@
         body.light .modal-content .ability .ab-details span { background: #d0c0b0; }
         .modal-content .ability .ab-desc {
             margin-top: 6px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .modal-content .ability .ab-desc label {
-            color: #887766;
-            font-size: 13px;
-        }
-        body.light .modal-content .ability .ab-desc label { color: #5a4a40; }
-        .modal-content .ability .ab-desc textarea {
-            background: #0f0b0a;
-            border: 1px solid #3a2a28;
             color: #d4c8b8;
-            padding: 4px 8px;
+            font-size: 14px;
+            background: #0f0b0a;
+            padding: 6px 10px;
             border-radius: 4px;
-            font-family: inherit;
-            font-size: 13px;
-            resize: vertical;
-            min-height: 36px;
-            width: 100%;
+            border-left: 2px solid #884444;
         }
-        body.light .modal-content .ability .ab-desc textarea {
-            background: #faf5f0;
-            border-color: #b8a89c;
+        body.light .modal-content .ability .ab-desc {
             color: #2a1e1c;
-        }
-        .modal-content .ability .ab-desc textarea:focus {
-            outline: none;
-            border-color: #884444;
+            background: #faf5f0;
+            border-left-color: #aa6666;
         }
         .modal-content .no-abilities {
             color: #887766;
             font-style: italic;
         }
 
-        /* Управление (фильтры) — адаптация под тему */
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -329,7 +308,6 @@
             color: #4a2a1a;
         }
 
-        /* Адаптив для страницы досье */
         @media (max-width: 600px) {
             .card-grid { grid-template-columns: 1fr; }
             .controls { flex-direction: column; align-items: stretch; }
@@ -339,7 +317,6 @@
 </head>
 <body class="dark">
 
-    <!-- ===== ШАПКА (общая) ===== -->
     <div class="content">
         <header class="header">
             <div class="logo">DEADSEEK</div>
@@ -352,7 +329,6 @@
             </nav>
         </header>
 
-        <!-- ===== ОСНОВНОЙ КОНТЕНТ ДОСЬЕ ===== -->
         <h2 style="font-family: 'Cinzel', serif; color: #dd8844; text-align: center; margin: 10px 0 20px;">
             📖 Досье персонажей
         </h2>
@@ -390,7 +366,6 @@
         <div class="footer">DeadSeek — концепт · Данные обновлены 14.07.2026</div>
     </div>
 
-    <!-- Модальное окно -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close" id="modalClose">&times;</span>
@@ -399,10 +374,9 @@
         </div>
     </div>
 
-    <!-- ===== СКРИПТЫ ===== -->
     <script src="script.js"></script>
     <script>
-        // ===== ДАННЫЕ (те же самые) =====
+        // ===== ДАННЫЕ С ОПИСАНИЯМИ =====
         const characters = [
             {
                 name: "Bloody Noob",
@@ -412,9 +386,9 @@
                 baseDmg: 20,
                 baseCd: "3s",
                 abilities: [
-                    { name: "Combo", type: "Урон", value: 50, duration: "-", cooldown: "25s", radius: "[Uknown]" },
-                    { name: "Human Heart", type: "Лечение", value: 40, duration: "-", cooldown: "50s", radius: "-" },
-                    { name: "Bloody Cola", type: "Мобильность", value: "2x", duration: "10s", cooldown: "40s", radius: "-" }
+                    { name: "Combo", type: "Урон", value: 50, duration: "-", cooldown: "25s", radius: "[Uknown]", description: "Наносит 50 урона." },
+                    { name: "Human Heart", type: "Лечение", value: 40, duration: "-", cooldown: "50s", radius: "-", description: "Восстанавливает 40 HP." },
+                    { name: "Bloody Cola", type: "Мобильность", value: "2x", duration: "10s", cooldown: "40s", radius: "-", description: "Увеличивает скорость в 2 раза на 10 секунд." }
                 ]
             },
             {
@@ -425,8 +399,8 @@
                 baseDmg: 5,
                 baseCd: "10s",
                 abilities: [
-                    { name: "Life Burger", type: "Лечение", value: 90, duration: "-", cooldown: "120s", radius: "-" },
-                    { name: "Bloxy Cola", type: "Мобильность", value: "3x", duration: "5s", cooldown: "60s", radius: "-" }
+                    { name: "Life Burger", type: "Лечение", value: 90, duration: "-", cooldown: "120s", radius: "-", description: "Восстанавливает 100% HP." },
+                    { name: "Bloxy Cola", type: "Мобильность", value: "3x", duration: "5s", cooldown: "60s", radius: "-", description: "Увеличивает скорость в 3 раза на 5 секунд." }
                 ]
             },
             {
@@ -437,9 +411,9 @@
                 baseDmg: 20,
                 baseCd: "2s",
                 abilities: [
-                    { name: "Break", type: "Урон", value: 60, duration: "-", cooldown: "30s", radius: "[Uknown]" },
-                    { name: "Three Washeps", type: "Урон", value: 20, duration: "-", cooldown: "40s", radius: "-" },
-                    { name: "Ice Rink", type: "Дебафф", value: "-", duration: "10s", cooldown: "60s", radius: "full map" }
+                    { name: "Break", type: "Урон", value: 60, duration: "-", cooldown: "30s", radius: "[Uknown]", description: "Наносит 60 урона. Перелом позвоночника." },
+                    { name: "Three Washeps", type: "Урон", value: 20, duration: "-", cooldown: "40s", radius: "-", description: "Выстреливает 3 шайбами, каждая наносит 20 урона, летят в случайных игроков." },
+                    { name: "Ice Rink", type: "Дебафф", value: "-", duration: "10s", cooldown: "60s", radius: "full map", description: "Создаёт каток на всей карте, игроки падают на 10 секунд." }
                 ]
             },
             {
@@ -450,9 +424,9 @@
                 baseDmg: "10 + stun 5s",
                 baseCd: "20s",
                 abilities: [
-                    { name: "Default", type: "Stun", value: "-10hp", duration: "5s", cooldown: "30s", radius: "[Uknown]" },
-                    { name: "Roller Skates", type: "Мобильность", value: "2x", duration: "10s", cooldown: "50s", radius: "-" },
-                    { name: "Whistling", type: "Stun", value: "-", duration: "5s", cooldown: "30s", radius: "[Uknown]" }
+                    { name: "Default", type: "Stun", value: "-10hp", duration: "5s", cooldown: "30s", radius: "[Uknown]", description: "Оглушает на 5 секунд и наносит 10 урона." },
+                    { name: "Roller Skates", type: "Мобильность", value: "2x", duration: "10s", cooldown: "50s", radius: "-", description: "Ускорение в 2 раза на 10 секунд." },
+                    { name: "Whistling", type: "Stun", value: "-", duration: "5s", cooldown: "30s", radius: "[Uknown]", description: "Сбивает убийцу с ног на 5 секунд." }
                 ]
             },
             {
@@ -463,9 +437,9 @@
                 baseDmg: 10,
                 baseCd: "1s",
                 abilities: [
-                    { name: "Leg Kick", type: "Урон", value: 40, duration: "-", cooldown: "30s", radius: "[Uknown]" },
-                    { name: "X-Ray", type: "Буквально X-Ray", value: "-", duration: "10s", cooldown: "40s", radius: "-" },
-                    { name: "Trap", type: "Stun", value: "-10hp", duration: "5s", cooldown: "30s", radius: "-" }
+                    { name: "Leg Kick", type: "Урон", value: 40, duration: "-", cooldown: "30s", radius: "[Uknown]", description: "Наносит 40 урона." },
+                    { name: "X-Ray", type: "Буквально X-Ray", value: "-", duration: "10s", cooldown: "40s", radius: "-", description: "Позволяет видеть выживших сквозь стены на 10 секунд." },
+                    { name: "Trap", type: "Stun", value: "-10hp", duration: "5s", cooldown: "30s", radius: "-", description: "Останавливает выжившего на 5 секунд и наносит 10 урона." }
                 ]
             },
             {
@@ -476,8 +450,8 @@
                 baseDmg: "-",
                 baseCd: "-",
                 abilities: [
-                    { name: "Firt-aid Kit", type: "Лечение", value: 1, duration: "50s", cooldown: "40s", radius: "[Uknown]" },
-                    { name: "Coffin Carrigge", type: "клоны-уборщики*", value: "2шт", duration: "-", cooldown: "90s", radius: "full map" }
+                    { name: "Firt-aid Kit", type: "Лечение", value: 1, duration: "50s", cooldown: "40s", radius: "[Uknown]", description: "Выбрасывает медкомплект, лечит 1 HP/сек в радиусе на 50 секунд." },
+                    { name: "Coffin Carrigge", type: "клоны-уборщики*", value: "2шт", duration: "-", cooldown: "90s", radius: "full map", description: "Вызывает сотрудников, которые убирают трупы с дороги." }
                 ]
             },
             {
@@ -488,10 +462,10 @@
                 baseDmg: 40,
                 baseCd: "5s",
                 abilities: [
-                    { name: "Click", type: "Урон", value: 25, duration: "-", cooldown: "15s", radius: "[Uknown]" },
-                    { name: "Combo", type: "Урон", value: 50, duration: "-", cooldown: "20s", radius: "[Uknown]" },
-                    { name: "Glitch", type: "Дебафф glitch", value: "-", duration: "10s", cooldown: "30s", radius: "-" },
-                    { name: "Crazy Song", type: "Дебафф", value: "-", duration: "5s", cooldown: "40s", radius: "-" }
+                    { name: "Click", type: "Урон", value: 25, duration: "-", cooldown: "15s", radius: "[Uknown]", description: "Наносит 25 урона." },
+                    { name: "Combo", type: "Урон", value: 50, duration: "-", cooldown: "20s", radius: "[Uknown]", description: "Наносит 50 урона." },
+                    { name: "Glitch", type: "Дебафф glitch", value: "-", duration: "10s", cooldown: "30s", radius: "-", description: "Ослепляет и создаёт помехи выжившим в радиусе на 10 секунд." },
+                    { name: "Crazy Song", type: "Дебафф", value: "-", duration: "5s", cooldown: "40s", radius: "-", description: "Излучает звуки, вызывающие потерю управления на 5 секунд." }
                 ]
             },
             {
@@ -502,9 +476,9 @@
                 baseDmg: 20,
                 baseCd: "15s",
                 abilities: [
-                    { name: "Crazy Kick", type: "Урон", value: 20, duration: "-", cooldown: "20s", radius: "[Uknown]" },
-                    { name: "Jail", type: "Stun", value: "-", duration: "5s", cooldown: "35s", radius: "-" },
-                    { name: "Fly", type: "Мобильность", value: "3x + fly", duration: "5s", cooldown: "60s", radius: "-" }
+                    { name: "Crazy Kick", type: "Урон", value: 20, duration: "-", cooldown: "20s", radius: "[Uknown]", description: "Наносит 20 урона." },
+                    { name: "Jail", type: "Stun", value: "-", duration: "5s", cooldown: "35s", radius: "-", description: "Ставит клетку для убийцы на 5 секунд." },
+                    { name: "Fly", type: "Мобильность", value: "3x + fly", duration: "5s", cooldown: "60s", radius: "-", description: "Даёт полёт на 5 секунд со скоростью x3." }
                 ]
             },
             {
@@ -515,9 +489,9 @@
                 baseDmg: 25,
                 baseCd: "3s",
                 abilities: [
-                    { name: "Пронзание", type: "Урон", value: 30, duration: "-", cooldown: "15s", radius: "[Uknown]" },
-                    { name: "Call of Undead", type: "clones", value: "[random]", duration: "-", cooldown: "50s", radius: "-" },
-                    { name: "Ritual", type: "+hitbox distants", value: "[Uknown]", duration: "25s", cooldown: "90s", radius: "-" }
+                    { name: "Пронзание", type: "Урон", value: 30, duration: "-", cooldown: "15s", radius: "[Uknown]", description: "Наносит 30 урона." },
+                    { name: "Call of Undead", type: "clones", value: "[random]", duration: "-", cooldown: "50s", radius: "-", description: "Призывает приспешников. Количество зависит от убитых выживших. Длится бесконечно." },
+                    { name: "Ritual", type: "+hitbox distants", value: "[Uknown]", duration: "25s", cooldown: "90s", radius: "-", description: "Добавляет дополнительные конечности, увеличивая хитбокс на 25 секунд." }
                 ]
             },
             {
@@ -528,9 +502,9 @@
                 baseDmg: "- + stun 2s",
                 baseCd: "30s",
                 abilities: [
-                    { name: "Взмах", type: "Slownes", value: "1.5x", duration: "5s", cooldown: "40s", radius: "[Uknown]" },
-                    { name: "Anti-Attack", type: "disable attacks", value: "-", duration: "30s", cooldown: "120s", radius: "-" },
-                    { name: "Harmony", type: "Random hp", value: "-", duration: "-", cooldown: "40s", radius: "-" }
+                    { name: "Взмах", type: "Slownes", value: "1.5x", duration: "5s", cooldown: "40s", radius: "[Uknown]", description: "Замедляет убийцу в 1.5 раза на 5 секунд." },
+                    { name: "Anti-Attack", type: "disable attacks", value: "-", duration: "30s", cooldown: "120s", radius: "-", description: "Блокирует любую способность убийцы на 30 секунд." },
+                    { name: "Harmony", type: "Random hp", value: "-", duration: "-", cooldown: "40s", radius: "-", description: "Увеличивает или уменьшает HP случайным образом. Зависит от уровня паники, который снижается после удачного стана." }
                 ]
             }
         ];
@@ -614,13 +588,6 @@
         const modalAbilities = document.getElementById('modalAbilities');
         const modalClose = document.getElementById('modalClose');
 
-        function loadDesc(charName, abName) {
-            return localStorage.getItem(`desc_${charName}_${abName}`) || '';
-        }
-        function saveDesc(charName, abName, text) {
-            localStorage.setItem(`desc_${charName}_${abName}`, text);
-        }
-
         function openModal(char) {
             modalTitle.textContent = `${char.name} — способности`;
             modalAbilities.innerHTML = '';
@@ -630,7 +597,7 @@
                 char.abilities.forEach(ab => {
                     const div = document.createElement('div');
                     div.className = 'ability';
-                    const saved = loadDesc(char.name, ab.name);
+                    const desc = ab.description || 'Описание отсутствует.';
                     div.innerHTML = `
                         <div class="ab-name">${ab.name}</div>
                         <div class="ab-details">
@@ -640,19 +607,11 @@
                             <span>Кулдаун: ${ab.cooldown}</span>
                             <span>Радиус: ${ab.radius}</span>
                         </div>
-                        <div class="ab-desc">
-                            <label>Описание:</label>
-                            <textarea data-char="${char.name}" data-ab="${ab.name}">${saved}</textarea>
-                        </div>
+                        <div class="ab-desc">${desc}</div>
                     `;
                     modalAbilities.appendChild(div);
                 });
             }
-            modalAbilities.querySelectorAll('textarea').forEach(ta => {
-                ta.addEventListener('input', function() {
-                    saveDesc(this.dataset.char, this.dataset.ab, this.value);
-                });
-            });
             modal.classList.add('show');
         }
 
@@ -661,7 +620,7 @@
         window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-        // ===== ОБРАБОТЧИКИ =====
+        // ===== ОБРАБОТЧИКИ ИНТЕРФЕЙСА =====
         document.querySelectorAll('.role-tabs button').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.role-tabs button').forEach(b => b.classList.remove('active'));
