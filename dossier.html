@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeadSeek — Досье</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Специфичные стили для досье, переопределяющие общие */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .card {
+            background: #1c1614;
+            border: 1px solid #3a2a28;
+            border-radius: 8px;
+            padding: 14px 14px 12px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .card:hover {
+            border-color: #884444;
+            background: #221c1a;
+        }
+        body.light .card {
+            background: #e6ddd6;
+            border-color: #b8a89c;
+        }
+        body.light .card:hover {
+            background: #f0e8e0;
+        }
+        .card .name {
+            font-size: 20px;
+            font-family: 'Cinzel', serif;
+            color: #eeccbb;
+            border-bottom: 1px solid #3a2a28;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+        body.light .card .name { color: #4a3228; border-bottom-color: #b8a89c; }
+        .card .role {
+            display: inline-block;
+            font-size: 12px;
+            background: #2a1a18;
+            padding: 0 10px;
+            border-radius: 10px;
+            color: #cc8877;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        body.light .card .role { background: #d0c0b0; color: #5a3a2a; }
+        .card .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 10px;
+            font-size: 13px;
+            color: #bbaa99;
+        }
+        body.light .card .stats { color: #5a4a40; }
+        .card .stats span {
+            background: #251e1b;
+            padding: 1px 6px;
+            border-radius: 3px;
+            border-left: 2px solid #662222;
+        }
+        body.light .card .stats span { background: #ddd0c0; border-left-color: #aa8877; }
+        .card .abilities-preview {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #998877;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .card .abilities-preview .tag {
+            background: #2a1f1c;
+            padding: 0 8px;
+            border-radius: 10px;
+            border: 1px solid #3a2a28;
+            font-size: 11px;
+        }
+        body.light .card .abilities-preview .tag { background: #d0c0b0; border-color: #b8a89c; color: #3a2a1a; }
+
+        /* Таблица */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 25px 0 10px;
+            background: #1c1614;
+            border-radius: 8px;
+            border: 1px solid #3a2a28;
+            padding: 6px 0;
+        }
+        body.light .table-wrap { background: #e6ddd6; border-color: #b8a89c; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        th {
+            background: #2a1a18;
+            color: #ffaa77;
+            padding: 8px 6px;
+            text-align: center;
+            border-bottom: 2px solid #662222;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.5px;
+            user-select: none;
+        }
+        body.light th { background: #d0c0b0; color: #4a2a1a; border-bottom-color: #aa8877; }
+        th:hover { background: #3a2220; }
+        body.light th:hover { background: #c0b0a0; }
+        td {
+            padding: 7px 6px;
+            text-align: center;
+            border-bottom: 1px solid #2a1e1c;
+        }
+        body.light td { border-bottom-color: #c0b0a0; }
+        tr:hover td { background: #251e1b; }
+        body.light tr:hover td { background: #f0e8e0; }
+        .role-killer td:first-child { color: #ff8866; }
+        .role-survivor td:first-child { color: #88bbdd; }
+        body.light .role-killer td:first-child { color: #aa4422; }
+        body.light .role-survivor td:first-child { color: #336699; }
+
+        /* Модалка */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow: auto;
+            background: rgba(0,0,0,0.7);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: #1c1614;
+            border: 1px solid #553333;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px 20px;
+        }
+        body.light .modal-content { background: #f0ebe5; border-color: #b8a89c; }
+        .modal-content .close {
+            float: right;
+            font-size: 28px;
+            color: #887766;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-content .close:hover { color: #cc4444; }
+        body.light .modal-content .close { color: #5a4a40; }
+        body.light .modal-content .close:hover { color: #aa2222; }
+        .modal-content h2 {
+            font-family: 'Cinzel', serif;
+            color: #eeccbb;
+            border-bottom: 2px solid #662222;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        body.light .modal-content h2 { color: #4a3228; border-bottom-color: #aa8877; }
+        .modal-content .ability {
+            background: #251e1b;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            border-left: 3px solid #662222;
+        }
+        body.light .modal-content .ability { background: #e6ddd6; border-left-color: #aa8877; }
+        .modal-content .ability .ab-name {
+            font-weight: bold;
+            color: #ffaa77;
+            font-size: 17px;
+        }
+        body.light .modal-content .ability .ab-name { color: #8a4a2a; }
+        .modal-content .ability .ab-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            font-size: 13px;
+            color: #bbaa99;
+            margin: 4px 0;
+        }
+        body.light .modal-content .ability .ab-details { color: #5a4a40; }
+        .modal-content .ability .ab-details span {
+            background: #2a1f1c;
+            padding: 0 8px;
+            border-radius: 10px;
+        }
+        body.light .modal-content .ability .ab-details span { background: #d0c0b0; }
+        .modal-content .ability .ab-desc {
+            margin-top: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .modal-content .ability .ab-desc label {
+            color: #887766;
+            font-size: 13px;
+        }
+        body.light .modal-content .ability .ab-desc label { color: #5a4a40; }
+        .modal-content .ability .ab-desc textarea {
+            background: #0f0b0a;
+            border: 1px solid #3a2a28;
+            color: #d4c8b8;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 36px;
+            width: 100%;
+        }
+        body.light .modal-content .ability .ab-desc textarea {
+            background: #faf5f0;
+            border-color: #b8a89c;
+            color: #2a1e1c;
+        }
+        .modal-content .ability .ab-desc textarea:focus {
+            outline: none;
+            border-color: #884444;
+        }
+        .modal-content .no-abilities {
+            color: #887766;
+            font-style: italic;
+        }
+
+        /* Управление (фильтры) — адаптация под тему */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 15px;
+            justify-content: center;
+            background: #1a1412;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #3a2a28;
+            margin-bottom: 25px;
+        }
+        body.light .controls {
+            background: #e6ddd6;
+            border-color: #b8a89c;
+        }
+        .controls input[type="text"] {
+            background: #1e1614;
+            border: 1px solid #553333;
+            color: #d4c8b8;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            min-width: 160px;
+        }
+        body.light .controls input[type="text"] {
+            background: #faf5f0;
+            border-color: #b8a89c;
+            color: #2a1e1c;
+        }
+        .controls .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .controls .filters button,
+        .controls .role-tabs button {
+            background: transparent;
+            border: 1px solid #553333;
+            color: #bbaaa0;
+            padding: 4px 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            transition: 0.15s;
+        }
+        body.light .controls .filters button,
+        body.light .controls .role-tabs button {
+            border-color: #b8a89c;
+            color: #5a4a40;
+        }
+        .controls .filters button:hover,
+        .controls .role-tabs button:hover {
+            background: #332222;
+            border-color: #884444;
+            color: #f0ddd0;
+        }
+        body.light .controls .filters button:hover,
+        body.light .controls .role-tabs button:hover {
+            background: #d0c0b0;
+            border-color: #aa8877;
+            color: #2a1a10;
+        }
+        .controls .filters button.active,
+        .controls .role-tabs button.active {
+            background: #661111;
+            border-color: #cc2222;
+            color: #fff;
+        }
+        body.light .controls .filters button.active,
+        body.light .controls .role-tabs button.active {
+            background: #aa4444;
+            border-color: #882222;
+            color: #fff;
+        }
+        .controls .role-tabs button {
+            border: none;
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+            padding: 4px 14px;
+            font-size: 15px;
+        }
+        .controls .role-tabs button.active {
+            border-bottom-color: #cc2222;
+            background: transparent;
+            color: #ffcccc;
+        }
+        body.light .controls .role-tabs button.active {
+            border-bottom-color: #882222;
+            color: #4a2a1a;
+        }
+
+        /* Адаптив для страницы досье */
+        @media (max-width: 600px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .controls .filters { justify-content: center; }
+        }
+    </style>
+</head>
+<body class="dark">
+
+    <!-- ===== ШАПКА (общая) ===== -->
+    <div class="content">
+        <header class="header">
+            <div class="logo">DEADSEEK</div>
+            <nav class="nav">
+                <a href="index.html">Главная</a>
+                <a href="dossier.html" class="active">Досье</a>
+                <a href="#news" onclick="alert('Скоро здесь будут новости!')">Новости</a>
+                <a href="https://boosty.to/deadseek" target="_blank">Поддержать</a>
+                <button class="theme-toggle" id="themeToggle">☀️</button>
+            </nav>
+        </header>
+
+        <!-- ===== ОСНОВНОЙ КОНТЕНТ ДОСЬЕ ===== -->
+        <h2 style="font-family: 'Cinzel', serif; color: #dd8844; text-align: center; margin: 10px 0 20px;">
+            📖 Досье персонажей
+        </h2>
+
+        <div class="controls">
+            <div class="role-tabs">
+                <button class="active" data-role="all">Все</button>
+                <button data-role="Киллер">🔪 Киллеры</button>
+                <button data-role="Выживший">🛡️ Выжившие</button>
+            </div>
+            <input type="text" id="searchInput" placeholder="Поиск по имени...">
+            <div class="filters" id="abilityFilter">
+                <button class="active" data-type="all">Все типы</button>
+            </div>
+        </div>
+
+        <div id="cardGrid" class="card-grid"></div>
+
+        <div class="table-wrap">
+            <table id="summaryTable">
+                <thead>
+                    <tr>
+                        <th data-sort="name">Персонаж</th>
+                        <th data-sort="role">Роль</th>
+                        <th data-sort="hp">HP</th>
+                        <th data-sort="speed">Скорость</th>
+                        <th data-sort="dmg">Баз. урон</th>
+                        <th data-sort="cd">Кулдаун</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="footer">DeadSeek — концепт · Данные обновлены 14.07.2026</div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="modalClose">&times;</span>
+            <h2 id="modalTitle">Персонаж</h2>
+            <div id="modalAbilities"></div>
+        </div>
+    </div>
+
+    <!-- ===== СКРИПТЫ ===== -->
+    <script src="script.js"></script>
+    <script>
+        // ===== ДАННЫЕ (те же самые) =====
+        const characters = [
+            {
+                name: "Bloody Noob",
+                role: "Киллер",
+                hp: 1150,
+                speed: 25.0,
+                baseDmg: 20,
+                baseCd: "3s",
+                abilities: [
+                    { name: "Combo", type: "Урон", value: 50, duration: "-", cooldown: "25s", radius: "[Uknown]" },
+                    { name: "Human Heart", type: "Лечение", value: 40, duration: "-", cooldown: "50s", radius: "-" },
+                    { name: "Bloody Cola", type: "Мобильность", value: "2x", duration: "10s", cooldown: "40s", radius: "-" }
+                ]
+            },
+            {
+                name: "Noob",
+                role: "Выживший",
+                hp: 90,
+                speed: 22.0,
+                baseDmg: 5,
+                baseCd: "10s",
+                abilities: [
+                    { name: "Life Burger", type: "Лечение", value: 90, duration: "-", cooldown: "120s", radius: "-" },
+                    { name: "Bloxy Cola", type: "Мобильность", value: "3x", duration: "5s", cooldown: "60s", radius: "-" }
+                ]
+            },
+            {
+                name: "Killer Kay",
+                role: "Киллер",
+                hp: 1200,
+                speed: 25.0,
+                baseDmg: 20,
+                baseCd: "2s",
+                abilities: [
+                    { name: "Break", type: "Урон", value: 60, duration: "-", cooldown: "30s", radius: "[Uknown]" },
+                    { name: "Three Washeps", type: "Урон", value: 20, duration: "-", cooldown: "40s", radius: "-" },
+                    { name: "Ice Rink", type: "Дебафф", value: "-", duration: "10s", cooldown: "60s", radius: "full map" }
+                ]
+            },
+            {
+                name: "Kay",
+                role: "Выживший",
+                hp: 110,
+                speed: 22.0,
+                baseDmg: "10 + stun 5s",
+                baseCd: "20s",
+                abilities: [
+                    { name: "Default", type: "Stun", value: "-10hp", duration: "5s", cooldown: "30s", radius: "[Uknown]" },
+                    { name: "Roller Skates", type: "Мобильность", value: "2x", duration: "10s", cooldown: "50s", radius: "-" },
+                    { name: "Whistling", type: "Stun", value: "-", duration: "5s", cooldown: "30s", radius: "[Uknown]" }
+                ]
+            },
+            {
+                name: "Crazy Suspect",
+                role: "Киллер",
+                hp: 900,
+                speed: 23.0,
+                baseDmg: 10,
+                baseCd: "1s",
+                abilities: [
+                    { name: "Leg Kick", type: "Урон", value: 40, duration: "-", cooldown: "30s", radius: "[Uknown]" },
+                    { name: "X-Ray", type: "Буквально X-Ray", value: "-", duration: "10s", cooldown: "40s", radius: "-" },
+                    { name: "Trap", type: "Stun", value: "-10hp", duration: "5s", cooldown: "30s", radius: "-" }
+                ]
+            },
+            {
+                name: "Yuki",
+                role: "Выживший",
+                hp: 90,
+                speed: 22.0,
+                baseDmg: "-",
+                baseCd: "-",
+                abilities: [
+                    { name: "Firt-aid Kit", type: "Лечение", value: 1, duration: "50s", cooldown: "40s", radius: "[Uknown]" },
+                    { name: "Coffin Carrigge", type: "клоны-уборщики*", value: "2шт", duration: "-", cooldown: "90s", radius: "full map" }
+                ]
+            },
+            {
+                name: "Hacker",
+                role: "Киллер",
+                hp: 1300,
+                speed: 24.0,
+                baseDmg: 40,
+                baseCd: "5s",
+                abilities: [
+                    { name: "Click", type: "Урон", value: 25, duration: "-", cooldown: "15s", radius: "[Uknown]" },
+                    { name: "Combo", type: "Урон", value: 50, duration: "-", cooldown: "20s", radius: "[Uknown]" },
+                    { name: "Glitch", type: "Дебафф glitch", value: "-", duration: "10s", cooldown: "30s", radius: "-" },
+                    { name: "Crazy Song", type: "Дебафф", value: "-", duration: "5s", cooldown: "40s", radius: "-" }
+                ]
+            },
+            {
+                name: "Cheater",
+                role: "Выживший",
+                hp: 110,
+                speed: 22.0,
+                baseDmg: 20,
+                baseCd: "15s",
+                abilities: [
+                    { name: "Crazy Kick", type: "Урон", value: 20, duration: "-", cooldown: "20s", radius: "[Uknown]" },
+                    { name: "Jail", type: "Stun", value: "-", duration: "5s", cooldown: "35s", radius: "-" },
+                    { name: "Fly", type: "Мобильность", value: "3x + fly", duration: "5s", cooldown: "60s", radius: "-" }
+                ]
+            },
+            {
+                name: "Нежить",
+                role: "Киллер",
+                hp: 1000,
+                speed: 24.0,
+                baseDmg: 25,
+                baseCd: "3s",
+                abilities: [
+                    { name: "Пронзание", type: "Урон", value: 30, duration: "-", cooldown: "15s", radius: "[Uknown]" },
+                    { name: "Call of Undead", type: "clones", value: "[random]", duration: "-", cooldown: "50s", radius: "-" },
+                    { name: "Ritual", type: "+hitbox distants", value: "[Uknown]", duration: "25s", cooldown: "90s", radius: "-" }
+                ]
+            },
+            {
+                name: "Экзарцист",
+                role: "Выживший",
+                hp: 80,
+                speed: 22.0,
+                baseDmg: "- + stun 2s",
+                baseCd: "30s",
+                abilities: [
+                    { name: "Взмах", type: "Slownes", value: "1.5x", duration: "5s", cooldown: "40s", radius: "[Uknown]" },
+                    { name: "Anti-Attack", type: "disable attacks", value: "-", duration: "30s", cooldown: "120s", radius: "-" },
+                    { name: "Harmony", type: "Random hp", value: "-", duration: "-", cooldown: "40s", radius: "-" }
+                ]
+            }
+        ];
+
+        const abilityTypes = [...new Set(characters.flatMap(c => c.abilities.map(a => a.type)))].sort();
+
+        // ===== СОСТОЯНИЕ =====
+        let currentRole = 'all';
+        let currentAbilityType = 'all';
+        let searchQuery = '';
+        let sortField = 'name';
+        let sortAsc = true;
+
+        // ===== ФУНКЦИИ =====
+        function getFiltered() {
+            return characters.filter(c => {
+                if (currentRole !== 'all' && c.role !== currentRole) return false;
+                if (searchQuery && !c.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+                if (currentAbilityType !== 'all') {
+                    if (!c.abilities.some(a => a.type === currentAbilityType)) return false;
+                }
+                return true;
+            });
+        }
+
+        function renderCards() {
+            const grid = document.getElementById('cardGrid');
+            const filtered = getFiltered();
+            grid.innerHTML = '';
+            filtered.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                const tags = c.abilities.slice(0, 3).map(a => `<span class="tag">${a.type}</span>`).join('');
+                const more = c.abilities.length > 3 ? `<span class="tag">+${c.abilities.length-3}</span>` : '';
+                card.innerHTML = `
+                    <div class="name">${c.name}</div>
+                    <div class="role">${c.role}</div>
+                    <div class="stats">
+                        <span>❤️ ${c.hp}</span>
+                        <span>🏃 ${c.speed}</span>
+                        <span>⚔️ ${c.baseDmg}</span>
+                        <span>⏱️ ${c.baseCd}</span>
+                    </div>
+                    <div class="abilities-preview">${tags} ${more}</div>
+                `;
+                card.addEventListener('click', () => openModal(c));
+                grid.appendChild(card);
+            });
+            renderTable(filtered);
+        }
+
+        function renderTable(chars) {
+            const tbody = document.getElementById('tableBody');
+            const sorted = [...chars].sort((a, b) => {
+                let va = a[sortField], vb = b[sortField];
+                if (typeof va === 'string') va = va.toLowerCase();
+                if (typeof vb === 'string') vb = vb.toLowerCase();
+                if (va < vb) return sortAsc ? -1 : 1;
+                if (va > vb) return sortAsc ? 1 : -1;
+                return 0;
+            });
+            tbody.innerHTML = '';
+            sorted.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.className = c.role === 'Киллер' ? 'role-killer' : 'role-survivor';
+                tr.innerHTML = `
+                    <td>${c.name}</td>
+                    <td>${c.role}</td>
+                    <td>${c.hp}</td>
+                    <td>${c.speed}</td>
+                    <td>${c.baseDmg}</td>
+                    <td>${c.baseCd}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ===== МОДАЛЬНОЕ ОКНО =====
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalAbilities = document.getElementById('modalAbilities');
+        const modalClose = document.getElementById('modalClose');
+
+        function loadDesc(charName, abName) {
+            return localStorage.getItem(`desc_${charName}_${abName}`) || '';
+        }
+        function saveDesc(charName, abName, text) {
+            localStorage.setItem(`desc_${charName}_${abName}`, text);
+        }
+
+        function openModal(char) {
+            modalTitle.textContent = `${char.name} — способности`;
+            modalAbilities.innerHTML = '';
+            if (char.abilities.length === 0) {
+                modalAbilities.innerHTML = '<div class="no-abilities">Нет способностей</div>';
+            } else {
+                char.abilities.forEach(ab => {
+                    const div = document.createElement('div');
+                    div.className = 'ability';
+                    const saved = loadDesc(char.name, ab.name);
+                    div.innerHTML = `
+                        <div class="ab-name">${ab.name}</div>
+                        <div class="ab-details">
+                            <span>Тип: ${ab.type}</span>
+                            <span>Величина: ${ab.value}</span>
+                            <span>Длит: ${ab.duration}</span>
+                            <span>Кулдаун: ${ab.cooldown}</span>
+                            <span>Радиус: ${ab.radius}</span>
+                        </div>
+                        <div class="ab-desc">
+                            <label>Описание:</label>
+                            <textarea data-char="${char.name}" data-ab="${ab.name}">${saved}</textarea>
+                        </div>
+                    `;
+                    modalAbilities.appendChild(div);
+                });
+            }
+            modalAbilities.querySelectorAll('textarea').forEach(ta => {
+                ta.addEventListener('input', function() {
+                    saveDesc(this.dataset.char, this.dataset.ab, this.value);
+                });
+            });
+            modal.classList.add('show');
+        }
+
+        function closeModal() { modal.classList.remove('show'); }
+        modalClose.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+        // ===== ОБРАБОТЧИКИ =====
+        document.querySelectorAll('.role-tabs button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.role-tabs button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentRole = this.dataset.role;
+                renderCards();
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            searchQuery = this.value;
+            renderCards();
+        });
+
+        const filterContainer = document.getElementById('abilityFilter');
+        abilityTypes.forEach(type => {
+            const btn = document.createElement('button');
+            btn.dataset.type = type;
+            btn.textContent = type;
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#abilityFilter button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentAbilityType = this.dataset.type;
+                renderCards();
+            });
+            filterContainer.appendChild(btn);
+        });
+
+        document.querySelectorAll('#summaryTable th[data-sort]').forEach(th => {
+            th.addEventListener('click', function() {
+                const field = this.dataset.sort;
+                if (sortField === field) sortAsc = !sortAsc;
+                else { sortField = field; sortAsc = true; }
+                renderCards();
+            });
+        });
+
+        // ===== СТАРТ =====
+        renderCards();
+    </script>
+
+</body>
+</html>
