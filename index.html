@@ -9,17 +9,20 @@
 </head>
 <body class="dark">
     <div class="content">
-
         <!-- ШАПКА -->
         <header class="header">
-            <!-- Логотип: текст или картинка — замени по желанию -->
-            <div class="logo"><img src="assets/logo.png" alt="DeadSeek" style="height: 40px; vertical-align: middle;"></div>
+            <div class="logo">
+                <!-- Если есть картинка, раскомментируй следующую строку и закомментируй текстовую -->
+                <!-- <img src="assets/logo.png" alt="DeadSeek"> -->
+                <span class="logo-text">DEADSEEK</span>
+            </div>
             <nav class="nav">
                 <a href="index.html" class="active" data-lang="home">Главная</a>
                 <a href="dossier.html" data-lang="dossier">Досье</a>
                 <a href="#news" onclick="alert('Скоро здесь будут новости!')" data-lang="news">Новости</a>
                 <a href="https://boosty.to/deadseek" target="_blank" data-lang="support">Поддержать</a>
                 <button class="theme-toggle" id="themeToggle">☀️</button>
+                <button class="lang-toggle" id="langToggle">🇬🇧 EN</button>
             </nav>
         </header>
 
@@ -36,7 +39,7 @@
             </p>
         </section>
 
-        <!-- КАРТОЧКИ-ССЫЛКИ -->
+        <!-- КАРТОЧКИ -->
         <div class="card-grid-home">
             <a href="dossier.html" style="text-decoration: none;">
                 <div class="card-home">
@@ -70,7 +73,7 @@
             </a>
         </div>
 
-        <!-- ВИДЖЕТ TELEGRAM (кнопка) -->
+        <!-- TELEGRAM виджет -->
         <section style="margin: 30px 0; text-align: center;">
             <h2 class="index-news-title" style="font-family: 'Cinzel', serif; color: #dd8844; text-align: center; margin-bottom: 15px;">
                 📰 Последние новости
@@ -88,7 +91,6 @@
             DeadSeek · концепт · 2026<br>
             Все права на тьму защищены
         </footer>
-
     </div>
 
     <script src="script.js"></script>
