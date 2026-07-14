@@ -4,9 +4,8 @@ body {
     font-family: 'Georgia', 'Times New Roman', serif;
     padding: 0 20px 20px;
     min-height: 100vh;
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.3s, color 0.3s;
 }
-/* Тёмная тема (по умолчанию) */
 body.dark {
     background: #0b0807;
     color: #d4c8b8;
@@ -15,11 +14,8 @@ body.light {
     background: #f0ebe5;
     color: #2a1e1c;
 }
-a {
-    color: #cc4444;
-    text-decoration: none;
-}
-a:hover { text-shadow: 0 0 8px currentColor; }
+a { color: #cc4444; text-decoration: none; }
+a:hover { text-shadow: 0 0 8px #cc4444; }
 
 /* ===== ШАПКА ===== */
 .header {
@@ -31,7 +27,11 @@ a:hover { text-shadow: 0 0 8px currentColor; }
     border-bottom: 2px solid #662222;
     margin-bottom: 25px;
 }
-.logo {
+.logo img {
+    height: 50px;
+    vertical-align: middle;
+}
+.logo-text {
     font-family: 'Cinzel', 'Georgia', serif;
     font-size: 32px;
     font-weight: bold;
@@ -39,9 +39,8 @@ a:hover { text-shadow: 0 0 8px currentColor; }
     text-shadow: 0 0 15px #660000;
     letter-spacing: 3px;
 }
-body.light .logo { text-shadow: 0 0 10px #aa4444; }
+body.light .logo-text { text-shadow: 0 0 10px #aa4444; }
 
-/* Меню */
 .nav {
     display: flex;
     flex-wrap: wrap;
@@ -66,8 +65,7 @@ body.light .logo { text-shadow: 0 0 10px #aa4444; }
 body.light .nav a { color: #5a4a40; }
 body.light .nav a:hover { color: #2a1a10; }
 
-/* Кнопка переключения темы */
-.theme-toggle {
+.theme-toggle, .lang-toggle {
     background: none;
     border: 1px solid #553333;
     color: #d4c8b8;
@@ -77,25 +75,25 @@ body.light .nav a:hover { color: #2a1a10; }
     font-size: 14px;
     transition: 0.2s;
 }
-.theme-toggle:hover {
+.theme-toggle:hover, .lang-toggle:hover {
     background: #332222;
     border-color: #884444;
 }
-body.light .theme-toggle {
+body.light .theme-toggle, body.light .lang-toggle {
     border-color: #aa8877;
     color: #2a1e1c;
 }
-body.light .theme-toggle:hover {
+body.light .theme-toggle:hover, body.light .lang-toggle:hover {
     background: #ddd0c0;
 }
 
-/* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+/* ===== КОНТЕЙНЕР ===== */
 .content {
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* ===== КАРТОЧКИ (для главной) ===== */
+/* ===== КАРТОЧКИ (ГЛАВНАЯ) ===== */
 .card-grid-home {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -130,7 +128,7 @@ body.light .card-home h3 { color: #4a3228; }
 .card-home p { color: #bbaa99; font-size: 14px; }
 body.light .card-home p { color: #5a4a40; }
 
-/* ===== ВИДЖЕТ TELEGRAM (iframe) ===== */
+/* ===== ВИДЖЕТ TELEGRAM ===== */
 .tg-widget {
     margin: 30px 0;
     border-radius: 10px;
