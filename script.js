@@ -1,4 +1,4 @@
-// ===== ПЕРЕВОДЫ ДЛЯ ОБЩИХ ЭЛЕМЕНТОВ =====
+// ===== ПЕРЕВОДЫ =====
 const translations = {
     ru: {
         title: "DeadSeek — асимметричный хоррор",
@@ -90,38 +90,40 @@ const translations = {
     }
 };
 
-// ===== ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА =====
+// ===== СОСТОЯНИЕ =====
 let currentLang = localStorage.getItem('lang') || 'ru';
+let currentTheme = localStorage.getItem('theme') || 'dark';
 
+// ===== ПРИМЕНЕНИЕ ЯЗЫКА И ТЕМЫ =====
 function applyLang(lang) {
     currentLang = lang;
     localStorage.setItem('lang', lang);
     const t = translations[lang];
     document.documentElement.lang = lang;
-    const title = document.querySelector('.dossier-title');
-    if (title) title.textContent = tDossier.title;
-    // Заголовок
     document.title = t.title;
-    
-    // Логотип
-    
+
+    // Логотип — текст или картинка? Мы не трогаем лого, если он картинка, оставляем как есть.
+    // Но если используем текстовый лого, то обновляем
+    const logoText = document.querySelector('.logo-text');
+    if (logoText) logoText.textContent = t.logo;
+
     // Навигация
     document.querySelectorAll('.nav a[data-lang]').forEach(el => {
         const key = el.getAttribute('data-lang');
         if (key && t.nav[key]) el.textContent = t.nav[key];
     });
-    
-    // Кнопка переключения
-    const toggle = document.getElementById('langToggle');
-    if (toggle) toggle.textContent = lang === 'ru' ? '🇬🇧 EN' : '🇷🇺 RU';
-    
+
+    // Кнопка языка
+    const langToggle = document.getElementById('langToggle');
+    if (langToggle) langToggle.textContent = lang === 'ru' ? '🇬🇧 EN' : '🇷🇺 RU';
+
     // Главная страница
     if (document.querySelector('.index-subtitle')) {
         document.querySelector('.index-subtitle').textContent = t.index.subtitle;
         document.querySelector('.index-desc').textContent = t.index.desc;
         document.querySelector('.index-news-title').textContent = t.index.news;
         document.querySelector('.index-tg-notice').textContent = t.index.tg_notice;
-        document.querySelector('.index-footer').textContent = t.index.footer;
+        document.querySelector('.index-footer').innerHTML = t.index.footer.replace(/\n/g, '<br>');
         const tgBtn = document.querySelector('.index-tg-button');
         if (tgBtn) tgBtn.textContent = t.index.tg_button;
         const cards = document.querySelectorAll('.card-home p');
@@ -133,11 +135,11 @@ function applyLang(lang) {
             cards[4].textContent = t.index.cards.tiktok;
         }
     }
-    
-    // Страница досье
+
+    // Досье
     if (document.getElementById('cardGrid')) {
         const tDossier = t.dossier;
-        const title = document.querySelector('h2[style*="Досье персонажей"]');
+        const title = document.querySelector('.dossier-title');
         if (title) title.textContent = tDossier.title;
         const searchInput = document.getElementById('searchInput');
         if (searchInput) searchInput.placeholder = tDossier.search;
@@ -156,30 +158,45 @@ function applyLang(lang) {
                 if (i < keys.length) th.textContent = tDossier.table[keys[i]];
             });
         }
-        const footer = document.querySelector('.footer');
+        const footer = document.querySelector('.dossier-footer');
         if (footer) footer.textContent = tDossier.footer;
-        
-        // Перерисовываем карточки и таблицу с персонажами (если функция существует)
-        if (typeof window.renderCards === 'function') {
-            window.renderCards();
+
+        // Перерисовка досье (если функция объявлена)
+        if (typeof window.renderDossier === 'function') {
+            window.renderDossier();
         }
     }
 }
 
-// ===== ДОБАВЛЯЕМ КНОПКУ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА =====
+function applyTheme(theme) {
+    currentTheme = theme;
+    localStorage.setItem('theme', theme);
+    document.body.className = theme;
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+
+// ===== ИНИЦИАЛИЗАЦИЯ =====
 document.addEventListener('DOMContentLoaded', function() {
-    const nav = document.querySelector('.nav');
-    if (nav) {
-        const btn = document.createElement('button');
-        btn.id = 'langToggle';
-        btn.className = 'theme-toggle';
-        btn.textContent = currentLang === 'ru' ? '🇬🇧 EN' : '🇷🇺 RU';
-        btn.addEventListener('click', function() {
+    // Кнопка темы
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const newTheme = document.body.classList.contains('dark') ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+    }
+
+    // Кнопка языка
+    const langToggle = document.getElementById('langToggle');
+    if (langToggle) {
+        langToggle.addEventListener('click', function() {
             const newLang = currentLang === 'ru' ? 'en' : 'ru';
             applyLang(newLang);
         });
-        nav.appendChild(btn);
     }
-    // Применяем язык
+
+    // Применяем сохранённые настройки
+    applyTheme(currentTheme);
     applyLang(currentLang);
 });
