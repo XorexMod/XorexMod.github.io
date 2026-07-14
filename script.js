@@ -103,7 +103,6 @@ function applyLang(lang) {
     document.title = t.title;
     
     // Логотип
-    document.querySelectorAll('.logo').forEach(el => el.textContent = t.logo);
     
     // Навигация
     document.querySelectorAll('.nav a[data-lang]').forEach(el => {
