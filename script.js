@@ -98,7 +98,8 @@ function applyLang(lang) {
     localStorage.setItem('lang', lang);
     const t = translations[lang];
     document.documentElement.lang = lang;
-    
+    const title = document.querySelector('.dossier-title');
+    if (title) title.textContent = tDossier.title;
     // Заголовок
     document.title = t.title;
     
