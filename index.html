@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeadSeek — асимметричный хоррор</title>
-    <!-- Google Fonts для хоррор-стиля -->
+    <title>DeadSeek</title>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ===== */
+        /* ===== Стили (без изменений) ===== */
         :root {
             --bg: #0a0a0a;
             --bg-card: #1a1a1a;
@@ -19,8 +18,6 @@
             --font: 'Roboto Mono', monospace;
             --font-title: 'Creepster', cursive;
         }
-
-        /* Светлая тема */
         body.light {
             --bg: #f0f0f0;
             --bg-card: #ffffff;
@@ -28,14 +25,7 @@
             --border: #ccc;
             --shadow: 0 0 20px rgba(0,0,0,0.1);
         }
-
-        /* ===== ОБЩИЕ СТИЛИ ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
             background-color: var(--bg);
             color: var(--text);
@@ -44,16 +34,8 @@
             min-height: 100vh;
             padding: 20px;
         }
-
-        a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        a:hover {
-            text-shadow: 0 0 10px var(--accent-glow);
-        }
-
-        /* ===== ШАПКА ===== */
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-shadow: 0 0 10px var(--accent-glow); }
         header {
             display: flex;
             flex-wrap: wrap;
@@ -63,7 +45,6 @@
             border-bottom: 2px solid var(--accent);
             margin-bottom: 30px;
         }
-
         .logo h1 {
             font-family: var(--font-title);
             font-size: 2.8rem;
@@ -72,19 +53,17 @@
             text-shadow: 0 0 30px var(--accent-glow);
             margin: 0;
         }
-        .logo span {
+        .logo .subtitle {
             font-size: 0.9rem;
             opacity: 0.7;
             display: block;
         }
-
         .controls {
             display: flex;
             gap: 15px;
             align-items: center;
             flex-wrap: wrap;
         }
-
         .controls button {
             background: var(--bg-card);
             color: var(--text);
@@ -101,8 +80,6 @@
             color: #fff;
             border-color: var(--accent);
         }
-
-        /* ===== НАВИГАЦИЯ ===== */
         nav {
             display: flex;
             gap: 20px;
@@ -127,22 +104,15 @@
         nav a:hover:not(.active) {
             background: var(--bg-card);
         }
-
-        /* ===== СТРАНИЦЫ (вкладки) ===== */
         .page {
             display: none;
             animation: fadeIn 0.3s ease;
         }
-        .page.active {
-            display: block;
-        }
-
+        .page.active { display: block; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* ===== ГЛАВНАЯ СТРАНИЦА ===== */
         .hero {
             display: flex;
             flex-direction: column;
@@ -150,10 +120,7 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        .hero p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
+        .hero p { font-size: 1.1rem; line-height: 1.6; }
         .hero .socials {
             display: flex;
             gap: 15px;
@@ -171,8 +138,6 @@
             border-color: var(--accent);
             color: #fff;
         }
-
-        /* ===== ДОСЬЕ ===== */
         .dossier-section {
             margin-bottom: 40px;
         }
@@ -184,8 +149,6 @@
             padding-left: 15px;
             margin-bottom: 20px;
         }
-
-        /* Карточка персонажа */
         .character-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -195,10 +158,7 @@
             box-shadow: var(--shadow);
             transition: 0.2s;
         }
-        .character-card:hover {
-            border-color: var(--accent);
-        }
-
+        .character-card:hover { border-color: var(--accent); }
         .character-header {
             display: flex;
             flex-wrap: wrap;
@@ -207,10 +167,7 @@
             cursor: pointer;
             user-select: none;
         }
-        .character-header h3 {
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
+        .character-header h3 { font-size: 1.6rem; font-weight: 700; }
         .character-header .stats-brief {
             display: flex;
             gap: 20px;
@@ -221,21 +178,14 @@
             font-size: 1.5rem;
             transition: 0.2s;
         }
-        .character-header .toggle-icon.open {
-            transform: rotate(180deg);
-        }
-
-        /* Детали (скрыты по умолчанию) */
+        .character-header .toggle-icon.open { transform: rotate(180deg); }
         .character-details {
             display: none;
             margin-top: 15px;
             border-top: 1px solid var(--border);
             padding-top: 15px;
         }
-        .character-details.open {
-            display: block;
-        }
-
+        .character-details.open { display: block; }
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -245,14 +195,8 @@
             padding: 10px;
             border-radius: 8px;
         }
-        .stat-item {
-            font-size: 0.9rem;
-        }
-        .stat-item strong {
-            color: var(--accent);
-        }
-
-        /* Способности */
+        .stat-item { font-size: 0.9rem; }
+        .stat-item strong { color: var(--accent); }
         .ability {
             background: rgba(0,0,0,0.15);
             border-left: 3px solid var(--accent);
@@ -267,10 +211,7 @@
             align-items: baseline;
             font-size: 0.95rem;
         }
-        .ability-header .name {
-            font-weight: 700;
-            color: var(--accent);
-        }
+        .ability-header .name { font-weight: 700; color: var(--accent); }
         .ability-desc {
             margin-top: 5px;
             font-size: 0.9rem;
@@ -286,7 +227,6 @@
             background: var(--accent);
             color: #fff;
         }
-
         .ability-desc textarea {
             width: 100%;
             background: var(--bg);
@@ -300,29 +240,12 @@
             resize: vertical;
             min-height: 60px;
         }
-
-        /* ===== АДАПТИВ ===== */
         @media (max-width: 700px) {
-            header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-            .controls {
-                justify-content: center;
-            }
-            .logo h1 {
-                font-size: 2.2rem;
-            }
-            .character-header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 5px;
-            }
-            .character-header .stats-brief {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
+            header { flex-direction: column; align-items: stretch; gap: 10px; }
+            .controls { justify-content: center; }
+            .logo h1 { font-size: 2.2rem; }
+            .character-header { flex-direction: column; align-items: stretch; gap: 5px; }
+            .character-header .stats-brief { flex-wrap: wrap; gap: 10px; }
         }
     </style>
 </head>
@@ -330,29 +253,27 @@
     <header>
         <div class="logo">
             <h1>DeadSeek</h1>
-            <span>асимметричный хоррор на Roblox</span>
+            <span class="subtitle" id="subtitle">асимметричный хоррор на Roblox</span>
         </div>
         <div class="controls">
             <button id="themeToggle" title="Переключить тему">🌓</button>
-            <button id="langToggle" title="Переключить язык">🇷🇺/🇬🇧</button>
+            <button id="langToggle">🇷🇺</button>
         </div>
     </header>
 
-    <!-- Навигация -->
     <nav>
-        <a class="active" data-page="home">🏠 Главная</a>
-        <a data-page="dossier">📖 Досье</a>
+        <a class="active" data-page="home" id="navHome">🏠 Главная</a>
+        <a data-page="dossier" id="navDossier">📖 Досье</a>
     </nav>
 
-    <!-- ===== СТРАНИЦА: ГЛАВНАЯ ===== -->
     <div id="page-home" class="page active">
         <div class="hero">
-            <h2>Добро пожаловать в DeadSeek</h2>
-            <p>
+            <h2 id="welcomeTitle">Добро пожаловать в DeadSeek</h2>
+            <p id="welcomeDesc">
                 <strong>DeadSeek</strong> — это асимметричный хоррор на платформе Roblox, вдохновлённый играми вроде <em>Forsaken</em>.
                 Один игрок становится <strong>убийцей</strong> с уникальными способностями, остальные — <strong>выжившими</strong>, которые должны сбежать или пережить ночь.
             </p>
-            <p>
+            <p id="welcomeStats">
                 В игре уже <strong>5 киллеров</strong> и <strong>5 выживших</strong> с разными статами и умениями. Проект находится в активной разработке — присоединяйся к сообществу!
             </p>
             <div class="socials">
@@ -361,169 +282,89 @@
                 <a href="#" target="_blank">🎵 TikTok</a>
                 <a href="#" target="_blank">💰 Boosty</a>
             </div>
-            <p style="margin-top:20px; font-size:0.9rem; opacity:0.7;">
+            <p style="margin-top:20px; font-size:0.9rem; opacity:0.7;" id="footerNote">
                 Сайт создан командой DeadSeek. Все данные персонажей интерактивны — нажми на описание способности, чтобы отредактировать его.
             </p>
         </div>
     </div>
 
-    <!-- ===== СТРАНИЦА: ДОСЬЕ ===== -->
     <div id="page-dossier" class="page">
-        <div id="dossierContainer">
-            <!-- Данные будут вставлены JS-ом -->
-        </div>
+        <div id="dossierContainer"></div>
     </div>
 
     <script>
         // ================================================================
-        // 1. ДАННЫЕ ПЕРСОНАЖЕЙ (КИЛЛЕРЫ И ВЫЖИВШИЕ)
+        // 1. ПЕРЕВОДЫ ИНТЕРФЕЙСА
         // ================================================================
+        const UI_TEXTS = {
+            ru: {
+                subtitle: 'асимметричный хоррор на Roblox',
+                navHome: '🏠 Главная',
+                navDossier: '📖 Досье',
+                welcomeTitle: 'Добро пожаловать в DeadSeek',
+                welcomeDesc: '<strong>DeadSeek</strong> — это асимметричный хоррор на платформе Roblox, вдохновлённый играми вроде <em>Forsaken</em>. Один игрок становится <strong>убийцей</strong> с уникальными способностями, остальные — <strong>выжившими</strong>, которые должны сбежать или пережить ночь.',
+                welcomeStats: 'В игре уже <strong>5 киллеров</strong> и <strong>5 выживших</strong> с разными статами и умениями. Проект находится в активной разработке — присоединяйся к сообществу!',
+                footerNote: 'Сайт создан командой DeadSeek. Все данные персонажей интерактивны — нажми на описание способности, чтобы отредактировать его.',
+                killersTitle: '🔪 Киллеры',
+                survivorsTitle: '🛡️ Выжившие'
+            },
+            en: {
+                subtitle: 'asymmetric horror on Roblox',
+                navHome: '🏠 Home',
+                navDossier: '📖 Dossier',
+                welcomeTitle: 'Welcome to DeadSeek',
+                welcomeDesc: '<strong>DeadSeek</strong> is an asymmetric horror game on Roblox, inspired by games like <em>Forsaken</em>. One player becomes the <strong>killer</strong> with unique abilities, the others are <strong>survivors</strong> who must escape or survive the night.',
+                welcomeStats: 'The game already features <strong>5 killers</strong> and <strong>5 survivors</strong> with different stats and skills. The project is in active development — join the community!',
+                footerNote: 'Website created by the DeadSeek team. All character data is interactive — click on an ability description to edit it.',
+                killersTitle: '🔪 Killers',
+                survivorsTitle: '🛡️ Survivors'
+            }
+        };
 
+        // ================================================================
+        // 2. ДАННЫЕ ПЕРСОНАЖЕЙ (с русскими именами)
+        // ================================================================
         const DEFAULT_DATA = {
             killers: [
                 {
                     id: 'bloody_noob',
-                    name: { ru: 'Bloody Noob', en: 'Bloody Noob' },
+                    name: { ru: 'Кровавый Нуб', en: 'Bloody Noob' },
                     hp: 1450, stamina: 110, speed: 25.0, damage: 20, cooldown: 3,
                     abilities: [
-                        {
-                            name: { ru: 'Combo', en: 'Combo' },
-                            type: { ru: 'Урон', en: 'Damage' },
-                            value: '50',
-                            duration: '-',
-                            cooldown: '25с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Наносит 50 урона', en: 'Deals 50 damage' }
-                        },
-                        {
-                            name: { ru: 'Human Heart', en: 'Human Heart' },
-                            type: { ru: 'Лечение', en: 'Heal' },
-                            value: '40',
-                            duration: '-',
-                            cooldown: '50с',
-                            radius: '-',
-                            desc: { ru: 'Восстанавливает 40 HP', en: 'Restores 40 HP' }
-                        },
-                        {
-                            name: { ru: 'Bloody Cola', en: 'Bloody Cola' },
-                            type: { ru: 'Мобильность', en: 'Mobility' },
-                            value: 'x2',
-                            duration: '10с',
-                            cooldown: '40с',
-                            radius: '-',
-                            desc: { ru: 'Увеличивает скорость в 2 раза на 10 секунд', en: 'Doubles speed for 10 seconds' }
-                        }
+                        { name: { ru: 'Комбо', en: 'Combo' }, type: { ru: 'Урон', en: 'Damage' }, value: '50', duration: '-', cooldown: '25с', radius: '[Uknown]', desc: { ru: 'Наносит 50 урона', en: 'Deals 50 damage' } },
+                        { name: { ru: 'Человеческое сердце', en: 'Human Heart' }, type: { ru: 'Лечение', en: 'Heal' }, value: '40', duration: '-', cooldown: '50с', radius: '-', desc: { ru: 'Восстанавливает 40 HP', en: 'Restores 40 HP' } },
+                        { name: { ru: 'Кровавая Кола', en: 'Bloody Cola' }, type: { ru: 'Мобильность', en: 'Mobility' }, value: 'x2', duration: '10с', cooldown: '40с', radius: '-', desc: { ru: 'Увеличивает скорость в 2 раза на 10 секунд', en: 'Doubles speed for 10 seconds' } }
                     ]
                 },
                 {
                     id: 'killer_kay',
-                    name: { ru: 'Killer Kay', en: 'Killer Kay' },
+                    name: { ru: 'Киллер Кей', en: 'Killer Kay' },
                     hp: 1200, stamina: 130, speed: 25.0, damage: 20, cooldown: 2,
                     abilities: [
-                        {
-                            name: { ru: 'Break', en: 'Break' },
-                            type: { ru: 'Урон', en: 'Damage' },
-                            value: '60',
-                            duration: '-',
-                            cooldown: '30с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Наносит 60 урона. Перелом позвоночника', en: 'Deals 60 damage. Spinal fracture' }
-                        },
-                        {
-                            name: { ru: 'Three Washeps', en: 'Three Washeps' },
-                            type: { ru: 'Урон', en: 'Damage' },
-                            value: '20',
-                            duration: '-',
-                            cooldown: '40с',
-                            radius: '-',
-                            desc: { ru: 'Выстреливает 3 шайбами, каждая наносит 20 урона, летят в случайных игроков', en: 'Shoots 3 pucks, each deals 20 damage, fly to random players' }
-                        },
-                        {
-                            name: { ru: 'Ice Rink', en: 'Ice Rink' },
-                            type: { ru: 'Дебафф', en: 'Debuff' },
-                            value: '-',
-                            duration: '10с',
-                            cooldown: '60с',
-                            radius: 'full map',
-                            desc: { ru: 'Создаёт каток на всей карте, игроки падают на 10 секунд', en: 'Creates an ice rink on the whole map, players fall for 10 seconds' }
-                        }
+                        { name: { ru: 'Перелом', en: 'Break' }, type: { ru: 'Урон', en: 'Damage' }, value: '60', duration: '-', cooldown: '30с', radius: '[Uknown]', desc: { ru: 'Наносит 60 урона. Перелом позвоночника', en: 'Deals 60 damage. Spinal fracture' } },
+                        { name: { ru: 'Три шайбы', en: 'Three Washeps' }, type: { ru: 'Урон', en: 'Damage' }, value: '20', duration: '-', cooldown: '40с', radius: '-', desc: { ru: 'Выстреливает 3 шайбами, каждая наносит 20 урона, летят в случайных игроков', en: 'Shoots 3 pucks, each deals 20 damage, fly to random players' } },
+                        { name: { ru: 'Ледяной каток', en: 'Ice Rink' }, type: { ru: 'Дебафф', en: 'Debuff' }, value: '-', duration: '10с', cooldown: '60с', radius: 'full map', desc: { ru: 'Создаёт каток на всей карте, игроки падают на 10 секунд', en: 'Creates an ice rink on the whole map, players fall for 10 seconds' } }
                     ]
                 },
                 {
                     id: 'crazy_suspect',
-                    name: { ru: 'Crazy Suspect', en: 'Crazy Suspect' },
+                    name: { ru: 'Безумный подозреваемый', en: 'Crazy Suspect' },
                     hp: 900, stamina: 120, speed: 23.0, damage: 10, cooldown: 1,
                     abilities: [
-                        {
-                            name: { ru: 'Leg Kick', en: 'Leg Kick' },
-                            type: { ru: 'Урон', en: 'Damage' },
-                            value: '40',
-                            duration: '-',
-                            cooldown: '30с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Наносит 40 урона', en: 'Deals 40 damage' }
-                        },
-                        {
-                            name: { ru: 'X-Ray', en: 'X-Ray' },
-                            type: { ru: 'X-Ray', en: 'X-Ray' },
-                            value: '-',
-                            duration: '10с',
-                            cooldown: '40с',
-                            radius: '-',
-                            desc: { ru: 'Позволяет видеть выживших сквозь стены на 10 секунд', en: 'Allows seeing survivors through walls for 10 seconds' }
-                        },
-                        {
-                            name: { ru: 'Trap', en: 'Trap' },
-                            type: { ru: 'Stun', en: 'Stun' },
-                            value: '-10hp',
-                            duration: '5с',
-                            cooldown: '30с',
-                            radius: '-',
-                            desc: { ru: 'Останавливает выжившего на 5 секунд и наносит 10 урона', en: 'Stops a survivor for 5 seconds and deals 10 damage' }
-                        }
+                        { name: { ru: 'Удар ногой', en: 'Leg Kick' }, type: { ru: 'Урон', en: 'Damage' }, value: '40', duration: '-', cooldown: '30с', radius: '[Uknown]', desc: { ru: 'Наносит 40 урона', en: 'Deals 40 damage' } },
+                        { name: { ru: 'Рентген', en: 'X-Ray' }, type: { ru: 'X-Ray', en: 'X-Ray' }, value: '-', duration: '10с', cooldown: '40с', radius: '-', desc: { ru: 'Позволяет видеть выживших сквозь стены на 10 секунд', en: 'Allows seeing survivors through walls for 10 seconds' } },
+                        { name: { ru: 'Ловушка', en: 'Trap' }, type: { ru: 'Оглушение', en: 'Stun' }, value: '-10hp', duration: '5с', cooldown: '30с', radius: '-', desc: { ru: 'Останавливает выжившего на 5 секунд и наносит 10 урона', en: 'Stops a survivor for 5 seconds and deals 10 damage' } }
                     ]
                 },
                 {
                     id: 'hacker',
-                    name: { ru: 'Hacker', en: 'Hacker' },
+                    name: { ru: 'Хакер', en: 'Hacker' },
                     hp: 1300, stamina: 120, speed: 24.0, damage: 40, cooldown: 5,
                     abilities: [
-                        {
-                            name: { ru: 'Click', en: 'Click' },
-                            type: { ru: 'Урон', en: 'Damage' },
-                            value: '25',
-                            duration: '-',
-                            cooldown: '15с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Наносит 25 урона', en: 'Deals 25 damage' }
-                        },
-                        {
-                            name: { ru: 'Combo', en: 'Combo' },
-                            type: { ru: 'Урон', en: 'Damage' },
-                            value: '50',
-                            duration: '-',
-                            cooldown: '20с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Наносит 50 урона', en: 'Deals 50 damage' }
-                        },
-                        {
-                            name: { ru: 'Glitch', en: 'Glitch' },
-                            type: { ru: 'Дебафф', en: 'Debuff' },
-                            value: '-',
-                            duration: '10с',
-                            cooldown: '30с',
-                            radius: '-',
-                            desc: { ru: 'Ослепляет и создаёт помехи выжившим в радиусе на 10 секунд', en: 'Blinds and creates interference for survivors in radius for 10 seconds' }
-                        },
-                        {
-                            name: { ru: 'Crazy Song', en: 'Crazy Song' },
-                            type: { ru: 'Дебафф', en: 'Debuff' },
-                            value: '-',
-                            duration: '5с',
-                            cooldown: '40с',
-                            radius: '-',
-                            desc: { ru: 'Излучает звуки, вызывающие потерю управления на 5 секунд', en: 'Emits sounds causing loss of control for 5 seconds' }
-                        }
+                        { name: { ru: 'Клик', en: 'Click' }, type: { ru: 'Урон', en: 'Damage' }, value: '25', duration: '-', cooldown: '15с', radius: '[Uknown]', desc: { ru: 'Наносит 25 урона', en: 'Deals 25 damage' } },
+                        { name: { ru: 'Комбо', en: 'Combo' }, type: { ru: 'Урон', en: 'Damage' }, value: '50', duration: '-', cooldown: '20с', radius: '[Uknown]', desc: { ru: 'Наносит 50 урона', en: 'Deals 50 damage' } },
+                        { name: { ru: 'Глюк', en: 'Glitch' }, type: { ru: 'Дебафф', en: 'Debuff' }, value: '-', duration: '10с', cooldown: '30с', radius: '-', desc: { ru: 'Ослепляет и создаёт помехи выжившим в радиусе на 10 секунд', en: 'Blinds and creates interference for survivors in radius for 10 seconds' } },
+                        { name: { ru: 'Сумасшедшая песня', en: 'Crazy Song' }, type: { ru: 'Дебафф', en: 'Debuff' }, value: '-', duration: '5с', cooldown: '40с', radius: '-', desc: { ru: 'Излучает звуки, вызывающие потерю управления на 5 секунд', en: 'Emits sounds causing loss of control for 5 seconds' } }
                     ]
                 },
                 {
@@ -531,244 +372,109 @@
                     name: { ru: 'Нежить', en: 'Undead' },
                     hp: 1000, stamina: 110, speed: 24.0, damage: 25, cooldown: 3,
                     abilities: [
-                        {
-                            name: { ru: 'Пронзание', en: 'Impale' },
-                            type: { ru: 'Урон', en: 'Damage' },
-                            value: '30',
-                            duration: '-',
-                            cooldown: '15с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Наносит 30 урона', en: 'Deals 30 damage' }
-                        },
-                        {
-                            name: { ru: 'Call of Undead', en: 'Call of Undead' },
-                            type: { ru: 'Призыв', en: 'Summon' },
-                            value: '[random]',
-                            duration: '∞',
-                            cooldown: '50с',
-                            radius: '-',
-                            desc: { ru: 'Призывает приспешников. Количество зависит от убитых выживших. Длится бесконечно', en: 'Summons minions. Count depends on killed survivors. Lasts forever' }
-                        },
-                        {
-                            name: { ru: 'Ritual', en: 'Ritual' },
-                            type: { ru: '+hitbox', en: '+hitbox' },
-                            value: '[Uknown]',
-                            duration: '25с',
-                            cooldown: '90с',
-                            radius: '-',
-                            desc: { ru: 'Добавляет дополнительные конечности, увеличивая хитбокс на 25 секунд', en: 'Adds extra limbs, increasing hitbox for 25 seconds' }
-                        }
+                        { name: { ru: 'Пронзание', en: 'Impale' }, type: { ru: 'Урон', en: 'Damage' }, value: '30', duration: '-', cooldown: '15с', radius: '[Uknown]', desc: { ru: 'Наносит 30 урона', en: 'Deals 30 damage' } },
+                        { name: { ru: 'Зов нежити', en: 'Call of Undead' }, type: { ru: 'Призыв', en: 'Summon' }, value: '[random]', duration: '∞', cooldown: '50с', radius: '-', desc: { ru: 'Призывает приспешников. Количество зависит от убитых выживших. Длится бесконечно', en: 'Summons minions. Count depends on killed survivors. Lasts forever' } },
+                        { name: { ru: 'Ритуал', en: 'Ritual' }, type: { ru: '+хитбокс', en: '+hitbox' }, value: '[Uknown]', duration: '25с', cooldown: '90с', radius: '-', desc: { ru: 'Добавляет дополнительные конечности, увеличивая хитбокс на 25 секунд', en: 'Adds extra limbs, increasing hitbox for 25 seconds' } }
                     ]
                 }
             ],
             survivors: [
                 {
                     id: 'noob',
-                    name: { ru: 'Noob', en: 'Noob' },
+                    name: { ru: 'Нуб', en: 'Noob' },
                     hp: 90, stamina: 100, speed: 22.0, damage: 5, cooldown: 10,
                     abilities: [
-                        {
-                            name: { ru: 'Life Burger', en: 'Life Burger' },
-                            type: { ru: 'Лечение', en: 'Heal' },
-                            value: '90',
-                            duration: '-',
-                            cooldown: '120с',
-                            radius: '-',
-                            desc: { ru: 'Восстанавливает 100% HP', en: 'Restores 100% HP' }
-                        },
-                        {
-                            name: { ru: 'Bloxy Cola', en: 'Bloxy Cola' },
-                            type: { ru: 'Мобильность', en: 'Mobility' },
-                            value: 'x3',
-                            duration: '5с',
-                            cooldown: '60с',
-                            radius: '-',
-                            desc: { ru: 'Увеличивает скорость в 3 раза на 5 секунд', en: 'Triples speed for 5 seconds' }
-                        }
+                        { name: { ru: 'Жизненный бургер', en: 'Life Burger' }, type: { ru: 'Лечение', en: 'Heal' }, value: '90', duration: '-', cooldown: '120с', radius: '-', desc: { ru: 'Восстанавливает 100% HP', en: 'Restores 100% HP' } },
+                        { name: { ru: 'Блокси Кола', en: 'Bloxy Cola' }, type: { ru: 'Мобильность', en: 'Mobility' }, value: 'x3', duration: '5с', cooldown: '60с', radius: '-', desc: { ru: 'Увеличивает скорость в 3 раза на 5 секунд', en: 'Triples speed for 5 seconds' } }
                     ]
                 },
                 {
                     id: 'kay',
-                    name: { ru: 'Kay', en: 'Kay' },
+                    name: { ru: 'Кей', en: 'Kay' },
                     hp: 110, stamina: 110, speed: 22.0, damage: 10, cooldown: 20,
                     abilities: [
-                        {
-                            name: { ru: 'Default', en: 'Default' },
-                            type: { ru: 'Stun', en: 'Stun' },
-                            value: '-10hp',
-                            duration: '5с',
-                            cooldown: '30с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Оглушает на 5 секунд и наносит 10 урона', en: 'Stuns for 5 seconds and deals 10 damage' }
-                        },
-                        {
-                            name: { ru: 'Roller Skates', en: 'Roller Skates' },
-                            type: { ru: 'Мобильность', en: 'Mobility' },
-                            value: 'x2',
-                            duration: '10с',
-                            cooldown: '50с',
-                            radius: '-',
-                            desc: { ru: 'Ускорение в 2 раза на 10 секунд', en: 'Double speed for 10 seconds' }
-                        },
-                        {
-                            name: { ru: 'Whistling', en: 'Whistling' },
-                            type: { ru: 'Stun', en: 'Stun' },
-                            value: '-',
-                            duration: '5с',
-                            cooldown: '30с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Сбивает убийцу с ног на 5 секунд', en: 'Knocks down the killer for 5 seconds' }
-                        }
+                        { name: { ru: 'Оглушение', en: 'Default' }, type: { ru: 'Оглушение', en: 'Stun' }, value: '-10hp', duration: '5с', cooldown: '30с', radius: '[Uknown]', desc: { ru: 'Оглушает на 5 секунд и наносит 10 урона', en: 'Stuns for 5 seconds and deals 10 damage' } },
+                        { name: { ru: 'Ролики', en: 'Roller Skates' }, type: { ru: 'Мобильность', en: 'Mobility' }, value: 'x2', duration: '10с', cooldown: '50с', radius: '-', desc: { ru: 'Ускорение в 2 раза на 10 секунд', en: 'Double speed for 10 seconds' } },
+                        { name: { ru: 'Свист', en: 'Whistling' }, type: { ru: 'Оглушение', en: 'Stun' }, value: '-', duration: '5с', cooldown: '30с', radius: '[Uknown]', desc: { ru: 'Сбивает убийцу с ног на 5 секунд', en: 'Knocks down the killer for 5 seconds' } }
                     ]
                 },
                 {
                     id: 'yuki',
-                    name: { ru: 'Yuki', en: 'Yuki' },
+                    name: { ru: 'Юки', en: 'Yuki' },
                     hp: 90, stamina: 100, speed: 22.0, damage: '-', cooldown: '-',
                     abilities: [
-                        {
-                            name: { ru: 'First-aid Kit', en: 'First-aid Kit' },
-                            type: { ru: 'Лечение', en: 'Heal' },
-                            value: '1 HP/сек',
-                            duration: '50с',
-                            cooldown: '40с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Выбрасывает медкомплект, лечит 1 HP/сек в радиусе на 50 секунд', en: 'Drops a medkit, heals 1 HP/sec in radius for 50 seconds' }
-                        },
-                        {
-                            name: { ru: 'Coffin Carriage', en: 'Coffin Carriage' },
-                            type: { ru: 'клоны-уборщики', en: 'cleaner clones' },
-                            value: '2шт',
-                            duration: '-',
-                            cooldown: '90с',
-                            radius: 'full map',
-                            desc: { ru: 'Вызывает сотрудников, которые убирают трупы с дороги', en: 'Calls employees who remove corpses from the road' }
-                        }
+                        { name: { ru: 'Аптечка', en: 'First-aid Kit' }, type: { ru: 'Лечение', en: 'Heal' }, value: '1 HP/сек', duration: '50с', cooldown: '40с', radius: '[Uknown]', desc: { ru: 'Выбрасывает медкомплект, лечит 1 HP/сек в радиусе на 50 секунд', en: 'Drops a medkit, heals 1 HP/sec in radius for 50 seconds' } },
+                        { name: { ru: 'Гробовщики', en: 'Coffin Carriage' }, type: { ru: 'клоны-уборщики', en: 'cleaner clones' }, value: '2шт', duration: '-', cooldown: '90с', radius: 'full map', desc: { ru: 'Вызывает сотрудников, которые убирают трупы с дороги', en: 'Calls employees who remove corpses from the road' } }
                     ]
                 },
                 {
                     id: 'cheater',
-                    name: { ru: 'Cheater', en: 'Cheater' },
+                    name: { ru: 'Читер', en: 'Cheater' },
                     hp: 110, stamina: 120, speed: 22.0, damage: 20, cooldown: 15,
                     abilities: [
-                        {
-                            name: { ru: 'Crazy Kick', en: 'Crazy Kick' },
-                            type: { ru: 'Урон', en: 'Damage' },
-                            value: '20',
-                            duration: '-',
-                            cooldown: '20с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Наносит 20 урона', en: 'Deals 20 damage' }
-                        },
-                        {
-                            name: { ru: 'Jail', en: 'Jail' },
-                            type: { ru: 'Stun', en: 'Stun' },
-                            value: '-',
-                            duration: '5с',
-                            cooldown: '35с',
-                            radius: '-',
-                            desc: { ru: 'Ставит клетку для убийцы на 5 секунд', en: 'Puts a cage on the killer for 5 seconds' }
-                        },
-                        {
-                            name: { ru: 'Fly', en: 'Fly' },
-                            type: { ru: 'Мобильность', en: 'Mobility' },
-                            value: 'x3 + fly',
-                            duration: '5с',
-                            cooldown: '60с',
-                            radius: '-',
-                            desc: { ru: 'Даёт полёт на 5 секунд со скоростью x3', en: 'Gives flight for 5 seconds with x3 speed' }
-                        }
+                        { name: { ru: 'Безумный удар', en: 'Crazy Kick' }, type: { ru: 'Урон', en: 'Damage' }, value: '20', duration: '-', cooldown: '20с', radius: '[Uknown]', desc: { ru: 'Наносит 20 урона', en: 'Deals 20 damage' } },
+                        { name: { ru: 'Тюрьма', en: 'Jail' }, type: { ru: 'Оглушение', en: 'Stun' }, value: '-', duration: '5с', cooldown: '35с', radius: '-', desc: { ru: 'Ставит клетку для убийцы на 5 секунд', en: 'Puts a cage on the killer for 5 seconds' } },
+                        { name: { ru: 'Полет', en: 'Fly' }, type: { ru: 'Мобильность', en: 'Mobility' }, value: 'x3 + fly', duration: '5с', cooldown: '60с', radius: '-', desc: { ru: 'Даёт полёт на 5 секунд со скоростью x3', en: 'Gives flight for 5 seconds with x3 speed' } }
                     ]
                 },
                 {
                     id: 'exorcist',
-                    name: { ru: 'Экзарцист', en: 'Exorcist' },
+                    name: { ru: 'Экзорцист', en: 'Exorcist' },
                     hp: 80, stamina: 110, speed: 22.0, damage: '-', cooldown: '-',
                     abilities: [
-                        {
-                            name: { ru: 'Взмах', en: 'Swing' },
-                            type: { ru: 'Замедление', en: 'Slow' },
-                            value: 'x1.5',
-                            duration: '5с',
-                            cooldown: '40с',
-                            radius: '[Uknown]',
-                            desc: { ru: 'Замедляет убийцу в 1.5 раза на 5 секунд', en: 'Slows the killer by 1.5 times for 5 seconds' }
-                        },
-                        {
-                            name: { ru: 'Anti-Attack', en: 'Anti-Attack' },
-                            type: { ru: 'Блок', en: 'Block' },
-                            value: '-',
-                            duration: '30с',
-                            cooldown: '120с',
-                            radius: '-',
-                            desc: { ru: 'Блокирует любую способность убийцы на 30 секунд', en: 'Blocks any killer ability for 30 seconds' }
-                        },
-                        {
-                            name: { ru: 'Harmony', en: 'Harmony' },
-                            type: { ru: 'Random HP', en: 'Random HP' },
-                            value: '-',
-                            duration: '-',
-                            cooldown: '40с',
-                            radius: '-',
-                            desc: { ru: 'Увеличивает или уменьшает HP случайным образом. Зависит от уровня паники, который снижается после удачного стана', en: 'Increases or decreases HP randomly. Depends on panic level, which decreases after a successful stun' }
-                        }
+                        { name: { ru: 'Взмах', en: 'Swing' }, type: { ru: 'Замедление', en: 'Slow' }, value: 'x1.5', duration: '5с', cooldown: '40с', radius: '[Uknown]', desc: { ru: 'Замедляет убийцу в 1.5 раза на 5 секунд', en: 'Slows the killer by 1.5 times for 5 seconds' } },
+                        { name: { ru: 'Анти-атака', en: 'Anti-Attack' }, type: { ru: 'Блок', en: 'Block' }, value: '-', duration: '30с', cooldown: '120с', radius: '-', desc: { ru: 'Блокирует любую способность убийцы на 30 секунд', en: 'Blocks any killer ability for 30 seconds' } },
+                        { name: { ru: 'Гармония', en: 'Harmony' }, type: { ru: 'Случайное HP', en: 'Random HP' }, value: '-', duration: '-', cooldown: '40с', radius: '-', desc: { ru: 'Увеличивает или уменьшает HP случайным образом. Зависит от уровня паники, который снижается после удачного стана', en: 'Increases or decreases HP randomly. Depends on panic level, which decreases after a successful stun' } }
                     ]
                 }
             ]
         };
 
         // ================================================================
-        // 2. ЗАГРУЗКА / СОХРАНЕНИЕ ДАННЫХ В localStorage
+        // 3. ЗАГРУЗКА / СОХРАНЕНИЕ
         // ================================================================
-
         function loadData() {
             const stored = localStorage.getItem('deadseek_data');
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
-                    // Простая проверка структуры
                     if (parsed.killers && parsed.survivors) return parsed;
                 } catch (e) {}
             }
-            // Если данных нет или они повреждены, сохраняем дефолтные
             localStorage.setItem('deadseek_data', JSON.stringify(DEFAULT_DATA));
-            return JSON.parse(JSON.stringify(DEFAULT_DATA)); // глубокое копирование
+            return JSON.parse(JSON.stringify(DEFAULT_DATA));
         }
-
         function saveData(data) {
             localStorage.setItem('deadseek_data', JSON.stringify(data));
         }
 
         // ================================================================
-        // 3. РЕНДЕРИНГ ДОСЬЕ
+        // 4. РЕНДЕРИНГ ДОСЬЕ
         // ================================================================
-
-        let currentLang = 'ru'; // 'ru' или 'en'
+        let currentLang = 'ru';
         let currentData = loadData();
 
         function renderDossier() {
             const container = document.getElementById('dossierContainer');
             container.innerHTML = '';
 
-            // Киллеры
+            const ui = UI_TEXTS[currentLang];
             const killerSection = document.createElement('div');
             killerSection.className = 'dossier-section';
-            killerSection.innerHTML = `<h2>${currentLang === 'ru' ? '🔪 Киллеры' : '🔪 Killers'}</h2>`;
+            killerSection.innerHTML = `<h2>${ui.killersTitle}</h2>`;
             currentData.killers.forEach((killer, index) => {
                 killerSection.appendChild(createCharacterCard(killer, 'killer', index));
             });
             container.appendChild(killerSection);
 
-            // Выжившие
             const survivorSection = document.createElement('div');
             survivorSection.className = 'dossier-section';
-            survivorSection.innerHTML = `<h2>${currentLang === 'ru' ? '🛡️ Выжившие' : '🛡️ Survivors'}</h2>`;
+            survivorSection.innerHTML = `<h2>${ui.survivorsTitle}</h2>`;
             currentData.survivors.forEach((survivor, index) => {
                 survivorSection.appendChild(createCharacterCard(survivor, 'survivor', index));
             });
             container.appendChild(survivorSection);
 
-            // Сохраняем изменения в localStorage (если были редактирования)
             saveData(currentData);
         }
 
@@ -783,7 +489,6 @@
             const damage = character.damage;
             const cooldown = character.cooldown;
 
-            // Шапка
             const header = document.createElement('div');
             header.className = 'character-header';
             header.innerHTML = `
@@ -799,12 +504,11 @@
             `;
             card.appendChild(header);
 
-            // Детали (скрыты)
             const details = document.createElement('div');
             details.className = 'character-details';
             details.innerHTML = `
                 <div class="stat-grid">
-                    <div class="stat-item"><strong>${currentLang === 'ru' ? 'HP' : 'HP'}</strong> ${hp}</div>
+                    <div class="stat-item"><strong>HP</strong> ${hp}</div>
                     <div class="stat-item"><strong>${currentLang === 'ru' ? 'Ста́мина' : 'Stamina'}</strong> ${stamina}</div>
                     <div class="stat-item"><strong>${currentLang === 'ru' ? 'Скорость' : 'Speed'}</strong> ${speed}</div>
                     <div class="stat-item"><strong>${currentLang === 'ru' ? 'Урон' : 'Damage'}</strong> ${damage}</div>
@@ -816,9 +520,7 @@
             `;
             card.appendChild(details);
 
-            // Клик по шапке для раскрытия
             header.addEventListener('click', function(e) {
-                // Чтобы не срабатывало при клике на textarea
                 if (e.target.tagName === 'TEXTAREA') return;
                 const isOpen = details.classList.toggle('open');
                 header.querySelector('.toggle-icon').textContent = isOpen ? '▲' : '▼';
@@ -835,8 +537,6 @@
             const duration = ability.duration;
             const cooldown = ability.cooldown;
             const radius = ability.radius;
-
-            // Уникальный идентификатор для сохранения
             const dataKey = `${type}_${charIndex}_${abIndex}`;
 
             return `
@@ -858,12 +558,10 @@
         }
 
         // ================================================================
-        // 4. РЕДАКТИРОВАНИЕ ОПИСАНИЙ (обработка событий)
+        // 5. РЕДАКТИРОВАНИЕ
         // ================================================================
-
         function initEditableDescriptions() {
             const container = document.getElementById('dossierContainer');
-            // Используем делегирование
             container.addEventListener('click', function(e) {
                 const target = e.target;
                 if (target.classList.contains('editable')) {
@@ -882,7 +580,7 @@
                 if (target.tagName === 'TEXTAREA' && target.dataset.key) {
                     saveEditedDescription(target);
                 }
-            }, true); // capture для события blur
+            }, true);
 
             container.addEventListener('keydown', function(e) {
                 const target = e.target;
@@ -892,12 +590,10 @@
                         target.blur();
                     }
                     if (e.key === 'Escape') {
-                        // Отменить изменения? Можно просто скрыть без сохранения
                         const span = target.previousElementSibling;
                         if (span && span.classList.contains('editable')) {
                             target.style.display = 'none';
                             span.style.display = 'inline';
-                            // Восстановить текст из span (не сохраняем)
                         }
                     }
                 }
@@ -914,65 +610,65 @@
                 textarea.style.display = 'none';
             }
 
-            // Обновляем данные в currentData
             const parts = key.split('_');
-            const type = parts[0]; // 'killer' или 'survivor'
+            const type = parts[0];
             const charIndex = parseInt(parts[1], 10);
             const abIndex = parseInt(parts[2], 10);
-
             const targetArray = type === 'killer' ? currentData.killers : currentData.survivors;
             if (targetArray[charIndex] && targetArray[charIndex].abilities[abIndex]) {
-                const ability = targetArray[charIndex].abilities[abIndex];
-                // Обновляем описание для текущего языка
-                ability.desc[currentLang] = newValue;
-                // Также обновляем для другого языка? Нет, сохраняем только текущий.
-                // Но для единообразия лучше сохранять отдельно.
-                // Запишем в localStorage.
+                targetArray[charIndex].abilities[abIndex].desc[currentLang] = newValue;
                 saveData(currentData);
             }
         }
 
         // ================================================================
-        // 5. ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА И ТЕМЫ
+        // 6. ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ПРИ СМЕНЕ ЯЗЫКА
         // ================================================================
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            renderDossier();
-            // После перерисовки заново инициализируем редактирование (делегирование уже работает)
-            // Но если мы перерисовали, старые обработчики не нужны, но они через делегирование.
-            // Однако нужно обновить тексты в заголовках и навигации? Мы уже перерендерили досье, а навигацию можно обновить вручную.
-            document.querySelector('nav a[data-page="home"]').textContent = lang === 'ru' ? '🏠 Главная' : '🏠 Home';
-            document.querySelector('nav a[data-page="dossier"]').textContent = lang === 'ru' ? '📖 Досье' : '📖 Dossier';
-            // Обновим кнопку языка
+        function updateUI(lang) {
+            const ui = UI_TEXTS[lang];
+            document.getElementById('subtitle').textContent = ui.subtitle;
+            document.getElementById('navHome').textContent = ui.navHome;
+            document.getElementById('navDossier').textContent = ui.navDossier;
+            document.getElementById('welcomeTitle').textContent = ui.welcomeTitle;
+            document.getElementById('welcomeDesc').innerHTML = ui.welcomeDesc;
+            document.getElementById('welcomeStats').innerHTML = ui.welcomeStats;
+            document.getElementById('footerNote').textContent = ui.footerNote;
             document.getElementById('langToggle').textContent = lang === 'ru' ? '🇷🇺' : '🇬🇧';
         }
 
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('deadseek_lang', lang);
+            updateUI(lang);
+            renderDossier(); // перерисовывает карточки с новыми именами и описаниями
+            // Заново инициализируем редактирование (делегирование уже работает)
+        }
+
+        // ================================================================
+        // 7. ТЕМА
+        // ================================================================
         function toggleTheme() {
             document.body.classList.toggle('light');
             const btn = document.getElementById('themeToggle');
             btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌓';
+            localStorage.setItem('deadseek_theme', document.body.classList.contains('light') ? 'light' : 'dark');
         }
 
         // ================================================================
-        // 6. НАВИГАЦИЯ (вкладки)
+        // 8. НАВИГАЦИЯ
         // ================================================================
-
         function initNavigation() {
             const navLinks = document.querySelectorAll('nav a');
             const pages = {
                 home: document.getElementById('page-home'),
                 dossier: document.getElementById('page-dossier')
             };
-
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const pageId = this.dataset.page;
-                    // Убираем активные классы
                     navLinks.forEach(l => l.classList.remove('active'));
                     this.classList.add('active');
-                    // Показываем нужную страницу
                     Object.keys(pages).forEach(id => {
                         pages[id].classList.toggle('active', id === pageId);
                     });
@@ -981,12 +677,10 @@
         }
 
         // ================================================================
-        // 7. ИНИЦИАЛИЗАЦИЯ
+        // 9. ИНИЦИАЛИЗАЦИЯ
         // ================================================================
-
         document.addEventListener('DOMContentLoaded', function() {
-            // Загружаем данные (уже загружены в currentData)
-            // Устанавливаем язык по умолчанию из localStorage или 'ru'
+            // Загружаем язык
             const savedLang = localStorage.getItem('deadseek_lang') || 'ru';
             currentLang = savedLang;
 
@@ -999,32 +693,16 @@
                 document.getElementById('themeToggle').textContent = '🌓';
             }
 
-            // Переключение темы
-            document.getElementById('themeToggle').addEventListener('click', function() {
-                toggleTheme();
-                localStorage.setItem('deadseek_theme', document.body.classList.contains('light') ? 'light' : 'dark');
-            });
-
-            // Переключение языка
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
             document.getElementById('langToggle').addEventListener('click', function() {
                 const newLang = currentLang === 'ru' ? 'en' : 'ru';
                 setLanguage(newLang);
-                localStorage.setItem('deadseek_lang', newLang);
             });
 
-            // Навигация
             initNavigation();
-
-            // Рендерим досье
             renderDossier();
-
-            // Инициализируем редактирование
             initEditableDescriptions();
-
-            // Устанавливаем язык в интерфейсе
-            setLanguage(currentLang); // обновит кнопки и надписи
-
-            // При первом рендере открываем первую вкладку (главная активна)
+            setLanguage(currentLang); // обновляет все UI-тексты
         });
     </script>
 </body>
