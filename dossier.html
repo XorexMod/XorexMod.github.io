@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* ----- СПЕЦИФИЧНЫЕ СТИЛИ ДЛЯ ДОСЬЕ (без изменений) ----- */
+        /* Стили только для досье */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -84,6 +84,7 @@
             font-size: 11px;
         }
         body.light .card .abilities-preview .tag { background: #d0c0b0; border-color: #b8a89c; color: #3a2a1a; }
+
         .table-wrap {
             overflow-x: auto;
             margin: 25px 0 10px;
@@ -124,6 +125,7 @@
         .role-survivor td:first-child { color: #88bbdd; }
         body.light .role-killer td:first-child { color: #aa4422; }
         body.light .role-survivor td:first-child { color: #336699; }
+
         .modal {
             display: none;
             position: fixed;
@@ -208,10 +210,28 @@
             background: #faf5f0;
             border-left-color: #aa6666;
         }
+        .modal-content .ability .ab-desc textarea {
+            width: 100%;
+            background: #1a1412;
+            border: 1px solid #3a2a28;
+            color: #d4c8b8;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 40px;
+        }
+        body.light .modal-content .ability .ab-desc textarea {
+            background: #faf5f0;
+            border-color: #b8a89c;
+            color: #2a1e1c;
+        }
         .modal-content .no-abilities {
             color: #887766;
             font-style: italic;
         }
+
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -312,25 +332,27 @@
     </style>
 </head>
 <body class="dark">
-
     <div class="content">
-        <!-- ШАПКА (общая) -->
+        <!-- ШАПКА -->
         <header class="header">
-            <!-- Логотип: текст или картинка — замени по желанию -->
-           <div class="logo"><img src="assets/logo.png" alt="DeadSeek" style="height: 40px; vertical-align: middle;"></div>
+            <div class="logo">
+                <span class="logo-text">DEADSEEK</span>
+            </div>
             <nav class="nav">
                 <a href="index.html" data-lang="home">Главная</a>
                 <a href="dossier.html" class="active" data-lang="dossier">Досье</a>
                 <a href="#news" onclick="alert('Скоро здесь будут новости!')" data-lang="news">Новости</a>
                 <a href="https://boosty.to/deadseek" target="_blank" data-lang="support">Поддержать</a>
                 <button class="theme-toggle" id="themeToggle">☀️</button>
+                <button class="lang-toggle" id="langToggle">🇬🇧 EN</button>
             </nav>
         </header>
 
         <!-- ЗАГОЛОВОК -->
         <h2 class="dossier-title" style="font-family: 'Cinzel', serif; color: #dd8844; text-align: center; margin: 10px 0 20px;">
-    📖 Досье персонажей
-</h2>
+            📖 Досье персонажей
+        </h2>
+
         <!-- УПРАВЛЕНИЕ -->
         <div class="controls">
             <div class="role-tabs">
@@ -365,7 +387,7 @@
         </div>
 
         <!-- ПОДВАЛ -->
-        <div class="footer">DeadSeek — концепт · Данные обновлены 14.07.2026</div>
+        <div class="footer dossier-footer">DeadSeek — концепт · Данные обновлены 14.07.2026</div>
     </div>
 
     <!-- МОДАЛЬНОЕ ОКНО -->
@@ -383,7 +405,7 @@
         //  ДАННЫЕ ПЕРСОНАЖЕЙ (ДВУЯЗЫЧНЫЕ)
         // ============================================================
         const characters = [
-            // ---------- Bloody Noob ----------
+            // Bloody Noob
             {
                 name: { ru: "Bloody Noob", en: "Bloody Noob" },
                 role: { ru: "Киллер", en: "Killer" },
@@ -397,7 +419,7 @@
                     { name: { ru: "Bloody Cola", en: "Bloody Cola" }, type: { ru: "Мобильность", en: "Mobility" }, value: "2x", duration: "10s", cooldown: "40s", radius: "-", description: { ru: "Увеличивает скорость в 2 раза на 10 секунд.", en: "Doubles speed for 10 seconds." } }
                 ]
             },
-            // ---------- Noob ----------
+            // Noob
             {
                 name: { ru: "Noob", en: "Noob" },
                 role: { ru: "Выживший", en: "Survivor" },
@@ -410,7 +432,7 @@
                     { name: { ru: "Bloxy Cola", en: "Bloxy Cola" }, type: { ru: "Мобильность", en: "Mobility" }, value: "3x", duration: "5s", cooldown: "60s", radius: "-", description: { ru: "Увеличивает скорость в 3 раза на 5 секунд.", en: "Triples speed for 5 seconds." } }
                 ]
             },
-            // ---------- Killer Kay ----------
+            // Killer Kay
             {
                 name: { ru: "Killer Kay", en: "Killer Kay" },
                 role: { ru: "Киллер", en: "Killer" },
@@ -424,7 +446,7 @@
                     { name: { ru: "Ice Rink", en: "Ice Rink" }, type: { ru: "Дебафф", en: "Debuff" }, value: "-", duration: "10s", cooldown: "60s", radius: "full map", description: { ru: "Создаёт каток на всей карте, игроки падают на 10 секунд.", en: "Creates an ice rink across the map, players slip for 10 seconds." } }
                 ]
             },
-            // ---------- Kay ----------
+            // Kay
             {
                 name: { ru: "Kay", en: "Kay" },
                 role: { ru: "Выживший", en: "Survivor" },
@@ -438,7 +460,7 @@
                     { name: { ru: "Whistling", en: "Whistling" }, type: { ru: "Stun", en: "Stun" }, value: "-", duration: "5s", cooldown: "30s", radius: "[Uknown]", description: { ru: "Сбивает убийцу с ног на 5 секунд.", en: "Knocks the killer down for 5 seconds." } }
                 ]
             },
-            // ---------- Crazy Suspect ----------
+            // Crazy Suspect
             {
                 name: { ru: "Crazy Suspect", en: "Crazy Suspect" },
                 role: { ru: "Киллер", en: "Killer" },
@@ -452,7 +474,7 @@
                     { name: { ru: "Trap", en: "Trap" }, type: { ru: "Stun", en: "Stun" }, value: "-10hp", duration: "5s", cooldown: "30s", radius: "-", description: { ru: "Останавливает выжившего на 5 секунд и наносит 10 урона.", en: "Stops survivor for 5 seconds and deals 10 damage." } }
                 ]
             },
-            // ---------- Yuki ----------
+            // Yuki
             {
                 name: { ru: "Yuki", en: "Yuki" },
                 role: { ru: "Выживший", en: "Survivor" },
@@ -465,7 +487,7 @@
                     { name: { ru: "Coffin Carriage", en: "Coffin Carriage" }, type: { ru: "клоны-уборщики*", en: "cleaner clones*" }, value: "2шт", duration: "-", cooldown: "90s", radius: "full map", description: { ru: "Вызывает сотрудников, которые убирают трупы с дороги.", en: "Summons helpers that remove corpses from the path." } }
                 ]
             },
-            // ---------- Hacker ----------
+            // Hacker
             {
                 name: { ru: "Hacker", en: "Hacker" },
                 role: { ru: "Киллер", en: "Killer" },
@@ -480,7 +502,7 @@
                     { name: { ru: "Crazy Song", en: "Crazy Song" }, type: { ru: "Дебафф", en: "Debuff" }, value: "-", duration: "5s", cooldown: "40s", radius: "-", description: { ru: "Излучает звуки, вызывающие потерю управления на 5 секунд.", en: "Emits sounds that cause loss of control for 5 seconds." } }
                 ]
             },
-            // ---------- Cheater ----------
+            // Cheater
             {
                 name: { ru: "Cheater", en: "Cheater" },
                 role: { ru: "Выживший", en: "Survivor" },
@@ -494,7 +516,7 @@
                     { name: { ru: "Fly", en: "Fly" }, type: { ru: "Мобильность", en: "Mobility" }, value: "3x + fly", duration: "5s", cooldown: "60s", radius: "-", description: { ru: "Даёт полёт на 5 секунд со скоростью x3.", en: "Grants flight for 5 seconds at 3x speed." } }
                 ]
             },
-            // ---------- Нежить (Undead) ----------
+            // Нежить (Undead)
             {
                 name: { ru: "Нежить", en: "Undead" },
                 role: { ru: "Киллер", en: "Killer" },
@@ -508,7 +530,7 @@
                     { name: { ru: "Ritual", en: "Ritual" }, type: { ru: "+hitbox distants", en: "+hitbox range" }, value: "[Uknown]", duration: "25s", cooldown: "90s", radius: "-", description: { ru: "Добавляет дополнительные конечности, увеличивая хитбокс на 25 секунд.", en: "Adds extra limbs, increasing hitbox for 25 seconds." } }
                 ]
             },
-            // ---------- Экзарцист (Exorcist) ----------
+            // Экзарцист (Exorcist)
             {
                 name: { ru: "Экзарцист", en: "Exorcist" },
                 role: { ru: "Выживший", en: "Survivor" },
@@ -524,9 +546,7 @@
             }
         ];
 
-        // ------------------------------------------------------------
-        //  ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ДЛЯ ДВУЯЗЫЧНЫХ ДАННЫХ
-        // ------------------------------------------------------------
+        // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
         function getLocalized(obj, lang) {
             if (typeof obj === 'object' && obj !== null && (obj.ru || obj.en)) {
                 return obj[lang] || obj.ru;
@@ -534,18 +554,15 @@
             return obj;
         }
 
-        // Получаем текущий язык
+        // ===== СОСТОЯНИЕ =====
         let lang = localStorage.getItem('lang') || 'ru';
-
-        // ------------------------------------------------------------
-        //  ЛОГИКА РЕНДЕРИНГА
-        // ------------------------------------------------------------
         let currentRole = 'all';
         let currentAbilityType = 'all';
         let searchQuery = '';
         let sortField = 'name';
         let sortAsc = true;
 
+        // ===== ФИЛЬТРАЦИЯ И СОРТИРОВКА =====
         function getFiltered() {
             return characters.filter(c => {
                 const name = getLocalized(c.name, lang);
@@ -560,6 +577,7 @@
             });
         }
 
+        // ===== РЕНДЕРИНГ КАРТОЧЕК =====
         function renderCards() {
             const grid = document.getElementById('cardGrid');
             const filtered = getFiltered();
@@ -589,6 +607,7 @@
             renderTable(filtered);
         }
 
+        // ===== РЕНДЕРИНГ ТАБЛИЦЫ =====
         function renderTable(chars) {
             const tbody = document.getElementById('tableBody');
             const sorted = [...chars].sort((a, b) => {
@@ -629,13 +648,18 @@
             });
         }
 
-        // ------------------------------------------------------------
-        //  МОДАЛЬНОЕ ОКНО
-        // ------------------------------------------------------------
+        // ===== МОДАЛЬНОЕ ОКНО =====
         const modal = document.getElementById('modal');
         const modalTitle = document.getElementById('modalTitle');
         const modalAbilities = document.getElementById('modalAbilities');
         const modalClose = document.getElementById('modalClose');
+
+        function loadDesc(charName, abName) {
+            return localStorage.getItem(`desc_${charName}_${abName}`) || '';
+        }
+        function saveDesc(charName, abName, text) {
+            localStorage.setItem(`desc_${charName}_${abName}`, text);
+        }
 
         function openModal(char) {
             const name = getLocalized(char.name, lang);
@@ -650,6 +674,7 @@
                     const abName = getLocalized(ab.name, lang);
                     const abType = getLocalized(ab.type, lang);
                     const desc = getLocalized(ab.description, lang) || (lang === 'ru' ? 'Описание отсутствует.' : 'Description missing.');
+                    const savedDesc = loadDesc(char.name, ab.name);
                     div.innerHTML = `
                         <div class="ab-name">${abName}</div>
                         <div class="ab-details">
@@ -659,11 +684,19 @@
                             <span>${lang === 'ru' ? 'Кулдаун' : 'CD'}: ${ab.cooldown}</span>
                             <span>${lang === 'ru' ? 'Радиус' : 'Radius'}: ${ab.radius}</span>
                         </div>
-                        <div class="ab-desc">${desc}</div>
+                        <div class="ab-desc">
+                            <textarea data-char="${char.name}" data-ab="${ab.name}">${savedDesc || desc}</textarea>
+                        </div>
                     `;
                     modalAbilities.appendChild(div);
                 });
             }
+            // Сохраняем при вводе
+            modalAbilities.querySelectorAll('textarea').forEach(ta => {
+                ta.addEventListener('input', function() {
+                    saveDesc(this.dataset.char, this.dataset.ab, this.value);
+                });
+            });
             modal.classList.add('show');
         }
 
@@ -672,9 +705,7 @@
         window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-        // ------------------------------------------------------------
-        //  ОБРАБОТЧИКИ ИНТЕРФЕЙСА
-        // ------------------------------------------------------------
+        // ===== ОБРАБОТЧИКИ =====
         document.querySelectorAll('.role-tabs button').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.role-tabs button').forEach(b => b.classList.remove('active'));
@@ -689,23 +720,25 @@
             renderCards();
         });
 
-        // Фильтр по типу способности
-        const abilityTypes = [...new Set(characters.flatMap(c => c.abilities.map(a => getLocalized(a.type, lang))))];
-        const filterContainer = document.getElementById('abilityFilter');
-        // Очищаем старые кнопки, кроме первой ("Все типы")
-        while (filterContainer.children.length > 1) filterContainer.removeChild(filterContainer.lastChild);
-        abilityTypes.forEach(type => {
-            const btn = document.createElement('button');
-            btn.dataset.type = type;
-            btn.textContent = type;
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('#abilityFilter button').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentAbilityType = this.dataset.type;
-                renderCards();
+        // Фильтр по типу способности (динамический, зависит от языка)
+        function rebuildAbilityFilter() {
+            const types = [...new Set(characters.flatMap(c => c.abilities.map(a => getLocalized(a.type, lang))))];
+            const container = document.getElementById('abilityFilter');
+            // Оставляем только первую кнопку "Все типы"
+            while (container.children.length > 1) container.removeChild(container.lastChild);
+            types.forEach(type => {
+                const btn = document.createElement('button');
+                btn.dataset.type = type;
+                btn.textContent = type;
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('#abilityFilter button').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentAbilityType = this.dataset.type;
+                    renderCards();
+                });
+                container.appendChild(btn);
             });
-            filterContainer.appendChild(btn);
-        });
+        }
 
         document.querySelectorAll('#summaryTable th[data-sort]').forEach(th => {
             th.addEventListener('click', function() {
@@ -716,41 +749,25 @@
             });
         });
 
-        // ------------------------------------------------------------
-        //  ПЕРЕРИСОВКА ПРИ СМЕНЕ ЯЗЫКА
-        // ------------------------------------------------------------
-        // Сохраним оригинальную функцию applyLang из script.js
-        // Мы переопределим её частично, чтобы перерисовывать досье
+        // ===== ПЕРЕХВАТ СМЕНЫ ЯЗЫКА =====
         const originalApplyLang = window.applyLang;
         window.applyLang = function(lang) {
             if (originalApplyLang) originalApplyLang(lang);
-            // Обновляем глобальную переменную и перерисовываем
+            // Обновляем данные
             window.lang = lang;
-            // Обновляем фильтры типов способностей (они зависят от языка)
-            const newTypes = [...new Set(characters.flatMap(c => c.abilities.map(a => getLocalized(a.type, lang))))];
-            const filterContainer = document.getElementById('abilityFilter');
-            while (filterContainer.children.length > 1) filterContainer.removeChild(filterContainer.lastChild);
-            newTypes.forEach(type => {
-                const btn = document.createElement('button');
-                btn.dataset.type = type;
-                btn.textContent = type;
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('#abilityFilter button').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentAbilityType = this.dataset.type;
-                    renderCards();
-                });
-                filterContainer.appendChild(btn);
-            });
-            // Перерисовываем
+            rebuildAbilityFilter();
             renderCards();
         };
 
-        // ------------------------------------------------------------
-        //  СТАРТ
-        // ------------------------------------------------------------
-        // Устанавливаем глобальный язык
+        // ===== ЭКСПОРТ ФУНКЦИИ ДЛЯ ВНЕШНЕГО ВЫЗОВА =====
+        window.renderDossier = function() {
+            rebuildAbilityFilter();
+            renderCards();
+        };
+
+        // ===== СТАРТ =====
         window.lang = localStorage.getItem('lang') || 'ru';
+        rebuildAbilityFilter();
         renderCards();
     </script>
 </body>
